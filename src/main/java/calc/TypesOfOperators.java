@@ -22,11 +22,11 @@ public class TypesOfOperators {
         return token == '+';
     }
 
-    private static boolean isOpenBracket(char token) {
+    static boolean isOpenBracket(char token) {
         return token == '(';
     }
 
-    private static boolean isCloseBracket(char token) {
+    static boolean isCloseBracket(char token) {
         return token == ')';
     }
 }

@@ -25,8 +25,6 @@ public class PolishEvaluator extends Calculation {
         }
         return expStack.pop();
     }
-
-
 }
 
 
