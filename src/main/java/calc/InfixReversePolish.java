@@ -15,9 +15,8 @@ public class InfixReversePolish {
         String safeExpression = expression.trim().replaceAll(" ", "").replaceAll(",", ".")
                 .replaceAll("--", "+").replace("+-", "-").replace("(-", "(0-").replace("/0", "&");
         if (expression.charAt(0) == '-') {
-            expression = "0" + expression;
+            safeExpression = "0" + safeExpression;
         }
-
         char[] chars = safeExpression.toCharArray();
         for (char token : chars) {
             expDeque.addLast(token);
