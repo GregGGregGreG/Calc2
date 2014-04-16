@@ -12,7 +12,12 @@ public class InfixReversePolish {
     private Deque<Character> expDeque = new ArrayDeque<Character>();
 
     public String parser(String expression) throws Exception {
-        final String safeExpression = expression.trim().replaceAll(" ", "").replaceAll(",", ".");
+        String safeExpression = expression.trim().replaceAll(" ", "").replaceAll(",", ".")
+                .replaceAll("--", "+").replace("+-", "-").replace("(-", "(0-").replace("/0", "&");
+        if (expression.charAt(0) == '-') {
+            expression = "0" + expression;
+        }
+
         char[] chars = safeExpression.toCharArray();
         for (char token : chars) {
             expDeque.addLast(token);
@@ -22,35 +27,42 @@ public class InfixReversePolish {
             if (Character.isDigit(token) || token == '.') {
                 str.append(token);
             } else if (isNotPriority(token)) {
-                cleanStack();
-                str.append(' ');
+                cleanStackOperator();
                 operator.push(token);
             } else if (isPriority(token)) {
                 str.append(' ');
                 operator.push(token);
             } else if (isCloseBracket(token)) {
-                cleanStack();
+                cleanStackBracket();
             } else if (isOpenBracket(token)) {
-                str.append(' ');
                 operator.push(token);
+            } else if (token == '&') {
+                throw new ArithmeticException("Деление на ноль невозможно ");
             } else {
                 throw new Exception("Token is not supported = " + token);
             }
         }
-        cleanStack();
+        cleanStackBracket();
         System.out.println(str);
-operator.clear();
+        operator.clear();
         String result = str.toString();
         str = new StringBuilder();
         expDeque.clear();
         return result;
     }
 
-    private void cleanStack() {
+    private void cleanStackBracket() {
         str.append(' ');
         char lastOperator = ' ';
-        while (!isOpenBracket(lastOperator) && !operator.isEmpty()) {
+        while (!(isOpenBracket(lastOperator)) && !(operator.isEmpty())) {
             str.append(lastOperator = operator.pop());
+        }
+    }
+
+    private void cleanStackOperator() {
+        str.append(' ');
+        while (!operator.isEmpty() && !isOpenBracket(operator.peek())) {
+            str.append(operator.pop());
         }
     }
 }
