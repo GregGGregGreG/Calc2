@@ -16,6 +16,8 @@ public class Gui extends JFrame {
     private JButton a2Button;
     private JButton a3Button;
     private JButton button4;
+    private JTextField textField1;
+    private JTextField textField2;
 
 
     public Gui() {
