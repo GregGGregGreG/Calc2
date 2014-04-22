@@ -2,19 +2,21 @@ package calc;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 
 /**
  * Created by GREG on 22.04.2014.
  */
 public class Gui extends JFrame {
-    //InfixReversePolish infixReversePolish = new InfixReversePolish();
+    InfixReversePolish infixReversePolish = new InfixReversePolish();
     private JPanel panel1;
     private JButton a1Button;
     private JButton a2Button;
     private JButton a3Button;
     private JTextField textField1;
-    private JTextField textField2;
+    private JTextField mainTetxField;
     private JButton a4Button;
     private JButton a5Button;
     private JButton a6Button;
@@ -30,7 +32,7 @@ public class Gui extends JFrame {
     private JButton plus;
     private JButton CE;
     private JButton multiplication;
-    private JButton result;
+    private JButton resultButton;
 
 
     public Gui() {
@@ -40,7 +42,7 @@ public class Gui extends JFrame {
         setTitle("Калькулятор");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setToScreenCenter(this);
-//        resultButton.addActionListener(result);
+        resultButton.addActionListener(result);
         panel1.addKeyListener(new KeyAdapter() {
         });
     }
@@ -55,6 +57,12 @@ public class Gui extends JFrame {
                 component.getHeight());
     }
 
-
+    private ActionListener result = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            textField1.setText(mainTetxField.getText()+" = ");
+            mainTetxField.setText(infixReversePolish.parser(mainTetxField.getText()));
+        }
+    };
 
 }
