@@ -16,7 +16,8 @@ import static calc.CalculationUtil.*;
         String safeExpression = expression.trim().replaceAll(" ", "").replaceAll(",", ".")
                 .replaceAll("--", "+").replaceAll("\\+\\-", "-").replaceAll("\\(\\-", "(0-")
                 .replaceAll("/0 ", "&").replaceAll("^-", "0-")
-                .replaceAll("/-", "/(0-").replaceAll("\\*-", "*(0-");
+                .replaceAll("/-", "/(0-").replaceAll("\\*-", "*(0-").replaceAll("×", "\\*")
+                .replaceAll("÷","\\/");
         char[] chars = safeExpression.toCharArray();
         for (char token : chars) {
             expressions.addLast(token);

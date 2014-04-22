@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
+import java.util.Arrays;
 
 /**
  * Created by GREG on 22.04.2014.
@@ -42,9 +43,19 @@ public class Gui extends JFrame {
         setTitle("Калькулятор");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setToScreenCenter(this);
+        CE.addActionListener(ceNumber);
         resultButton.addActionListener(result);
         panel1.addKeyListener(new KeyAdapter() {
         });
+        java.util.List<JButton> numberButtons = Arrays.asList(a0Button, a1Button, a2Button, a3Button,
+                a4Button, a5Button, a6Button, a7Button, a8Button, a9Button, pointButton);
+        for (JButton currentButton : numberButtons) {
+            currentButton.addActionListener(numberListener);
+        }
+        java.util.List<JButton> operatorButtons = Arrays.asList(plus, minus, division, multiplication,openBrecket,closeBracket);
+        for (JButton currentButton : operatorButtons) {
+            currentButton.addActionListener(operatorsListener);
+        }
     }
 
     public static void setToScreenCenter(Component component) {
@@ -60,9 +71,30 @@ public class Gui extends JFrame {
     private ActionListener result = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            textField1.setText(mainTetxField.getText()+" = ");
+            textField1.setText(mainTetxField.getText() + " = ");
             mainTetxField.setText(infixReversePolish.parser(mainTetxField.getText()));
         }
     };
+    private ActionListener numberListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            final JButton source = (JButton) e.getSource();
+            mainTetxField.setText(mainTetxField.getText() + source.getText());
+        }
+    };
+    private ActionListener operatorsListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            final JButton source = (JButton) e.getSource();
+            mainTetxField.setText(mainTetxField.getText()+" "+source.getText()+" ");
+        }
+    };
+    private ActionListener ceNumber=new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            mainTetxField.setText("");
+        }
+    };
+
 
 }
