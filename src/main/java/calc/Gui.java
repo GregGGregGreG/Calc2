@@ -2,8 +2,6 @@ package calc;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 
 /**
@@ -15,9 +13,24 @@ public class Gui extends JFrame {
     private JButton a1Button;
     private JButton a2Button;
     private JButton a3Button;
-    private JButton button4;
     private JTextField textField1;
     private JTextField textField2;
+    private JButton a4Button;
+    private JButton a5Button;
+    private JButton a6Button;
+    private JButton a7Button;
+    private JButton a8Button;
+    private JButton a9Button;
+    private JButton a0Button;
+    private JButton pointButton;
+    private JButton openBrecket;
+    private JButton closeBracket;
+    private JButton division;
+    private JButton minus;
+    private JButton plus;
+    private JButton CE;
+    private JButton multiplication;
+    private JButton result;
 
 
     public Gui() {
@@ -42,9 +55,6 @@ public class Gui extends JFrame {
                 component.getHeight());
     }
 
-    private final ActionListener result = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-        }
-    };
+
+
 }
