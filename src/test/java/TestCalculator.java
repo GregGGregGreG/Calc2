@@ -47,9 +47,9 @@ public class TestCalculator {
         Assert.assertTrue("Deleting many space", evaluator.evaluator(infixReversePolish.parser("  5  / 2   ")) == 2.5);
     }
 
-    @Test(expected = Exception.class)
+    @Test
     public void commaAsTheSeparator() throws Exception {
-        evaluator.evaluator(infixReversePolish.parser("  5,h5  / 2   "));
+        Assert.assertTrue(evaluator.evaluator(infixReversePolish.parser("  5,5  / 2   "))==2.75);
     }
 
     @Test
@@ -61,19 +61,18 @@ public class TestCalculator {
     @Test
     public void longExpression() throws Exception {
         Assert.assertTrue(evaluator.evaluator(infixReversePolish.parser("((18/2)*2)+(10*10)-(8/5)+10.3-(0.3/(5-3))")) == 126.55);
+        Assert.assertTrue("multiplication and division by a negative number, and parentheses.",evaluator.evaluator(infixReversePolish.parser("55+(((2+(2*10)-(-5))/(-10))+(88*-22)))-3")) == -1886.7);
     }
 
     @Test
-    public void negativeNumber() throws Exception{
-        Assert.assertTrue(evaluator.evaluator(infixReversePolish.parser("-5+3"))==-2);
+    public void negativeNumber() throws Exception {
+        Assert.assertTrue(evaluator.evaluator(infixReversePolish.parser("-5+3")) == -2);
     }
 
-    @Test (expected = Exception.class)
-    public void divZero() throws Exception{
-       evaluator.evaluator(infixReversePolish.parser("5/0"));
+    @Test(expected = Exception.class)
+    public void divZero() throws Exception {
+        evaluator.evaluator(infixReversePolish.parser("5/0"));
     }
-
-
 
 
     @Test

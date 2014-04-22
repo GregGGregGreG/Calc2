@@ -2,66 +2,70 @@ package calc;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Stack;
+import java.util.LinkedList;
 
 import static calc.CalculationUtil.*;
 
-public class InfixReversePolish {
-    private StringBuilder str = new StringBuilder();
-    private Stack<Character> operator = new Stack<Character>();
-    private Deque<Character> expDeque = new ArrayDeque<Character>();
+ public class InfixReversePolish {
+    private StringBuilder evaluation = new StringBuilder();
+    private Deque<Character> operators = new LinkedList<Character>();
+    private Deque<Character> expressions = new ArrayDeque<Character>();
 
-    public String parser(String expression) throws Exception {
+    public String parser(String expression) //throws Exception
+     {
         String safeExpression = expression.trim().replaceAll(" ", "").replaceAll(",", ".")
-                .replaceAll("--", "+").replace("+-", "-").replace("(-", "(0-").replace("/0", "&");
-        if (expression.charAt(0) == '-') {
-            safeExpression = "0" + safeExpression;
-        }
+                .replaceAll("--", "+").replaceAll("\\+\\-", "-").replaceAll("\\(\\-", "(0-")
+                .replaceAll("/0 ", "&").replaceAll("^-", "0-")
+                .replaceAll("/-", "/(0-").replaceAll("\\*-", "*(0-");
         char[] chars = safeExpression.toCharArray();
         for (char token : chars) {
-            expDeque.addLast(token);
+            expressions.addLast(token);
         }
-        while (!expDeque.isEmpty()) {
-            char token = expDeque.pollFirst();
+        while (!expressions.isEmpty()) {
+            char token = expressions.pollFirst();
             if (Character.isDigit(token) || token == '.') {
-                str.append(token);
+                evaluation.append(token);
             } else if (isNotPriority(token)) {
                 cleanStackOperator();
-                operator.push(token);
+                operators.add(token);
             } else if (isPriority(token)) {
-                str.append(' ');
-                operator.push(token);
+                evaluation.append(' ');
+                operators.add(token);
             } else if (isCloseBracket(token)) {
                 cleanStackBracket();
             } else if (isOpenBracket(token)) {
-                operator.push(token);
-            } else if (token == '&') {
-                throw new ArithmeticException("Деление на ноль невозможно ");
-            } else {
-                throw new Exception("Token is not supported = " + token);
-            }
+                operators.add(token);}
+//            } else if (token == '&') {
+//                throw new ArithmeticException("Деление на ноль невозможно ");
+//            } else {
+//                throw new Exception("Token is not supported = " + token);
+//            }
         }
         cleanStackBracket();
-        System.out.println(str);
-        operator.clear();
-        String result = str.toString();
-        str = new StringBuilder();
-        expDeque.clear();
-        return result;
+        cleanStackOperator();
+
+        System.out.println(evaluation);
+        operators.clear();
+        String result = evaluation.toString();
+        evaluation = new StringBuilder();
+        expressions.clear();
+
+        PolishEvaluator evaluator = new PolishEvaluator();
+        return String.valueOf(evaluator.evaluator(result));
     }
 
     private void cleanStackBracket() {
-        str.append(' ');
+        evaluation.append(' ');
         char lastOperator = ' ';
-        while (!(isOpenBracket(lastOperator)) && !(operator.isEmpty())) {
-            str.append(lastOperator = operator.pop());
+        while (!(isOpenBracket(lastOperator)) && !(operators.isEmpty())) {
+            evaluation.append(lastOperator = operators.pollLast());
         }
     }
 
     private void cleanStackOperator() {
-        str.append(' ');
-        while (!operator.isEmpty() && !isOpenBracket(operator.peek())) {
-            str.append(operator.pop());
+        evaluation.append(' ');
+        while (!operators.isEmpty() && !isOpenBracket(operators.peekLast())) {
+            evaluation.append(operators.pollLast());
         }
     }
 }
