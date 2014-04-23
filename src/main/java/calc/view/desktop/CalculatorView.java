@@ -14,8 +14,8 @@ public class CalculatorView extends JFrame {
 
     private JPanel mainPanel;
 
-    private JTextField textField1;
-    private JTextField mainTetxField;
+    private JTextField expressionBox;
+    private JTextField inputField;
 
     private JButton getNumber0;
     private JButton getNumber1;
@@ -42,6 +42,8 @@ public class CalculatorView extends JFrame {
 
     private InfixReversePolish infixReversePolish = new InfixReversePolish();
 
+    private Double ans;
+
     public CalculatorView() {
         setContentPane(mainPanel);
         setVisible(true);
@@ -52,42 +54,50 @@ public class CalculatorView extends JFrame {
         List<JButton> numberButtons = Arrays.asList(getNumber0, getNumber1, getNumber2, getNumber3,
                 getNumber4, getNumber5, getNumber6, getNumber7, getNumber8, getNumber9, getPointSeparator);
         for (JButton currentButton : numberButtons) {
-            currentButton.addActionListener(numberListener);
+            currentButton.addActionListener(listenerNumberButtons);
         }
         List<JButton> operatorButtons = Arrays.asList(getOperatorPlus, getOperatorMinus,
                 getOperatorDivision, getOperatorMultiplication, getOpenBracket, getCloseBracket);
         for (JButton currentButton : operatorButtons) {
-            currentButton.addActionListener(operatorsListener);
+            currentButton.addActionListener(listenerButtonsOperators);
         }
         resetButton.addActionListener(resetCalc);
-        getResult.addActionListener(result);
+        getResult.addActionListener(getResultCalc);
     }
 
-    private ActionListener numberListener = new ActionListener() {
+    private ActionListener listenerNumberButtons = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             final JButton source = (JButton) e.getSource();
-            mainTetxField.setText(mainTetxField.getText() + source.getText());
+            inputField.setText(inputField.getText() + source.getText());
+
         }
     };
-    private ActionListener operatorsListener = new ActionListener() {
+    private ActionListener listenerButtonsOperators = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             final JButton source = (JButton) e.getSource();
-            mainTetxField.setText(mainTetxField.getText() + " " + source.getText() + " ");
+            inputField.setText(inputField.getText() + " " + source.getText() + " ");
         }
     };
-    private ActionListener result = new ActionListener() {
+    private ActionListener getResultCalc = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            textField1.setText(mainTetxField.getText() + " = ");
-            mainTetxField.setText(infixReversePolish.parser(mainTetxField.getText()));
+            expressionBox.setText(inputField.getText() + " = ");
+            double resultExpression = infixReversePolish.parser(inputField.getText());
+            int convertNumber = (int) (resultExpression);
+            if (convertNumber == resultExpression) {
+                inputField.setText(String.valueOf(convertNumber));
+            } else {
+                inputField.setText(String.valueOf(resultExpression));
+            }
         }
     };
     private ActionListener resetCalc = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            mainTetxField.setText("");
+            inputField.setText("");
+            inputField.grabFocus();
         }
     };
 }

@@ -11,7 +11,7 @@ import static calc.logic.CalculationUtil.*;
     private Deque<Character> operators = new LinkedList<Character>();
     private Deque<Character> expressions = new ArrayDeque<Character>();
 
-    public String parser(String expression) //throws Exception
+    public Double parser(String expression) //throws Exception
      {
         String safeExpression = expression.trim().replaceAll(" ", "").replaceAll(",", ".")
                 .replaceAll("--", "+").replaceAll("\\+\\-", "-").replaceAll("\\(\\-", "(0-")
@@ -52,7 +52,7 @@ import static calc.logic.CalculationUtil.*;
         expressions.clear();
 
         PolishEvaluator evaluator = new PolishEvaluator();
-        return String.valueOf(evaluator.evaluator(result));
+        return evaluator.evaluator(result);
     }
 
     private void cleanStackBracket() {
