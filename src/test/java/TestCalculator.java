@@ -1,5 +1,4 @@
 import calc.InfixReversePolish;
-import calc.PolishEvaluator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,17 +8,17 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class TestCalculator {
     private InfixReversePolish infixReversePolish;
-    private PolishEvaluator evaluator;
+
 
     @Before
     public void before() {
         infixReversePolish = new InfixReversePolish();
-        evaluator = new PolishEvaluator();
+
     }
 
     @Test
-    public void testPlus() throws Exception {
-        Assert.assertTrue(evaluator.evaluator(infixReversePolish.parser("2+2")) == 4);
+    public void testPlus()  {
+        Assert.assertTrue(infixReversePolish.parser("2+2") == "4");
     }
 
     @Test
@@ -49,7 +48,7 @@ public class TestCalculator {
 
     @Test
     public void commaAsTheSeparator() throws Exception {
-        Assert.assertTrue(evaluator.evaluator(infixReversePolish.parser("  5,5  / 2   "))==2.75);
+        Assert.assertTrue(evaluator.evaluator(infixReversePolish.parser("  5,5  / 2   ")) == 2.75);
     }
 
     @Test
@@ -61,7 +60,7 @@ public class TestCalculator {
     @Test
     public void longExpression() throws Exception {
         Assert.assertTrue(evaluator.evaluator(infixReversePolish.parser("((18/2)*2)+(10*10)-(8/5)+10.3-(0.3/(5-3))")) == 126.55);
-        Assert.assertTrue("multiplication and division by a negative number, and parentheses.",evaluator.evaluator(infixReversePolish.parser("55+(((2+(2*10)-(-5))/(-10))+(88*-22)))-3")) == -1886.7);
+        Assert.assertTrue("multiplication and division by a negative number, and parentheses.", evaluator.evaluator(infixReversePolish.parser("55+(((2+(2*10)-(-5))/(-10))+(88*-22)))-3")) == -1886.7);
     }
 
     @Test
