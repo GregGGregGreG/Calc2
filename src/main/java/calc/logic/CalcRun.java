@@ -1,4 +1,6 @@
-package calc;
+package calc.logic;
+
+import calc.view.desktop.Gui;
 
 import javax.swing.*;
 

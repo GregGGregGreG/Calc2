@@ -1,9 +1,9 @@
-package calc;
+package calc.logic;
 
 import java.util.*;
 
-import static calc.CalculationUtil.calculation;
-import static calc.CalculationUtil.isOperators;
+import static calc.logic.CalculationUtil.calculation;
+import static calc.logic.CalculationUtil.isOperators;
 
 public class PolishEvaluator {
     public Double evaluator(String expression) {

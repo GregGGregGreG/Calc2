@@ -1,10 +1,10 @@
-package calc;
+package calc.logic;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
 
-import static calc.CalculationUtil.*;
+import static calc.logic.CalculationUtil.*;
 
  public class InfixReversePolish {
     private StringBuilder evaluation = new StringBuilder();

@@ -1,4 +1,4 @@
-package calc;
+package calc.logic;
 
 public class CalculationUtil {
     public static Double calculation(Character token, Double right, Double left) {
@@ -23,20 +23,20 @@ public class CalculationUtil {
         return isPlus(token) || isMinus(token);
     }
 
-    public static boolean isMultiply(char token) {
-        return token == '*';
-    }
-
-    public static boolean isDivision(char token) {
-        return token == '/';
+    public static boolean isPlus(char token) {
+        return token == '+';
     }
 
     public static boolean isMinus(char token) {
         return token == '-';
     }
 
-    public static boolean isPlus(char token) {
-        return token == '+';
+    public static boolean isMultiply(char token) {
+        return token == '*';
+    }
+
+    public static boolean isDivision(char token) {
+        return token == '/';
     }
 
     public static boolean isOpenBracket(char token) {
