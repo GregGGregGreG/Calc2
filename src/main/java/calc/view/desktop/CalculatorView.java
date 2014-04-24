@@ -55,11 +55,13 @@ public class CalculatorView extends JFrame {
         setTitle("Калькулятор");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         expressionBox.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        inputField.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+
         setToScreenCenter(this);
 
 
-        List<JButton> numberButtons = Arrays.asList(getNumber0, getNumber1, getNumber2, getNumber3,
-                getNumber4, getNumber5, getNumber6, getNumber7, getNumber8, getNumber9, getPointSeparator);
+        List<JButton> numberButtons = Arrays.asList(getNumber1, getNumber2, getNumber3,
+                getNumber4, getNumber5, getNumber6, getNumber7, getNumber8, getNumber9);
         for (JButton currentButton : numberButtons) {
             currentButton.addActionListener(listenerNumberButtons);
         }
@@ -68,11 +70,12 @@ public class CalculatorView extends JFrame {
         for (JButton currentButton : operatorButtons) {
             currentButton.addActionListener(listenerButtonsOperators);
         }
+        getNumber0.addActionListener(listenerNumberZero);
         resetButton.addActionListener(resetCalc);
         getResult.addActionListener(getResultCalc);
         getOpenBracket.addActionListener(listenerOpenBracket);
         getCloseBracket.addActionListener(listenerCloseBracket);
-
+        getPointSeparator.addActionListener(listenerNumberPoint);
         inputField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
                 char key = e.getKeyChar();
@@ -92,12 +95,22 @@ public class CalculatorView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 expressionBox.setText(inputField.getText() + " = ");
-                double resultExpression = infixReversePolish.parser(inputField.getText());
-                int convertNumber = (int) (resultExpression);
-                if (convertNumber == resultExpression) {
-                    inputField.setText(String.valueOf(convertNumber));
-                } else {
-                    inputField.setText(String.valueOf(resultExpression));
+                try {
+                    double resultExpression = infixReversePolish.parser(inputField.getText());
+                    int convertNumber = (int) (resultExpression);
+                    if (convertNumber == resultExpression) {
+                        inputField.setText(String.valueOf(convertNumber));
+                    } else {
+                        inputField.setText(String.valueOf(resultExpression));
+                    }
+                } catch (NullPointerException e1) {
+                    inputField.setText("Invalid expression");
+                    expressionBox.setText("");
+                    e1.printStackTrace();
+                } catch (Exception e1) {
+                    inputField.setText("Symbol is not supported");
+                    expressionBox.setText("");
+                    e1.printStackTrace();
                 }
             }
         });
@@ -145,13 +158,28 @@ public class CalculatorView extends JFrame {
         );
     }
 
-
-    private ActionListener listenerNumberButtons = new ActionListener() {
+    private ActionListener listenerNumberPoint = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             final JButton source = (JButton) e.getSource();
             inputField.setText(inputField.getText() + source.getText());
-
+        }
+    };private ActionListener listenerNumberZero = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            final JButton source = (JButton) e.getSource();
+            String expression = inputField.getText();
+            if (expression.equals("0")) inputField.setText("0");
+            else inputField.setText(inputField.getText() + source.getText());
+        }
+    };
+    private ActionListener listenerNumberButtons = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            final JButton source = (JButton) e.getSource();
+            String expression = inputField.getText();
+            if (expression.equals("0")) inputField.setText(source.getText());
+            else inputField.setText(inputField.getText() + source.getText());
         }
     };
     private ActionListener listenerButtonsOperators = new ActionListener() {
@@ -179,22 +207,30 @@ public class CalculatorView extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             expressionBox.setText(inputField.getText() + " = ");
-            double resultExpression = infixReversePolish.parser(inputField.getText());
-            int convertNumber = (int) (resultExpression);
-            if (convertNumber == resultExpression) {
-                inputField.setText(String.valueOf(convertNumber));
-            } else {
-                inputField.setText(String.valueOf(resultExpression));
+            try {
+                double resultExpression = infixReversePolish.parser(inputField.getText());
+                int convertNumber = (int) (resultExpression);
+                if (convertNumber == resultExpression) {
+                    inputField.setText(String.valueOf(convertNumber));
+                } else {
+                    inputField.setText(String.valueOf(resultExpression));
+                }
+            } catch (NullPointerException e1) {
+                inputField.setText("Invalid expression");
+                expressionBox.setText("");
+                e1.printStackTrace();
+            } catch (Exception e1) {
+                inputField.setText("Symbol is not supported");
+                expressionBox.setText("");
+                e1.printStackTrace();
             }
         }
     };
     private ActionListener resetCalc = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            inputField.setText("");
+            inputField.setText("0");
             inputField.grabFocus();
         }
     };
-
-
 }

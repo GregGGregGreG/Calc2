@@ -8,8 +8,10 @@ public class CalculationUtil {
         if (isDivision(token)) return left / right;
         else {
             throw new RuntimeException("Operation is not supported = " + token);
+
         }
     }
+
 
     public static boolean isOperators(char token) {
         return isPriority(token) || isNotPriority(token);

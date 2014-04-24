@@ -1,12 +1,13 @@
 package calc.logic;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import static calc.logic.CalculationUtil.calculation;
 import static calc.logic.CalculationUtil.isOperators;
 
 public class PolishEvaluator {
-    public Double evaluator(String expression) {
+    public static Double evaluator(String expression) {
         Deque<Double> expStack = new ArrayDeque<Double>();
         StringBuilder currentNumber = new StringBuilder();
         char[] chars = expression.toCharArray();

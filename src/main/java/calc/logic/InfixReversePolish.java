@@ -5,14 +5,14 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 import static calc.logic.CalculationUtil.*;
+import static calc.logic.PolishEvaluator.evaluator;
 
 public class InfixReversePolish {
     private StringBuilder evaluation = new StringBuilder();
     private Deque<Character> operators = new LinkedList<Character>();
     private Deque<Character> expressions = new ArrayDeque<Character>();
 
-    public Double parser(String expression) //throws Exception
-    {
+    public Double parser(String expression) throws Exception {
         String safeExpression = expression.trim().replaceAll(" ", "").replaceAll(",", ".")
                 .replaceAll("--", "+").replaceAll("\\+\\-", "-").replaceAll("\\(\\-", "(0-")
                 .replaceAll("/0 ", "&").replaceAll("^-", "0-")
@@ -36,23 +36,18 @@ public class InfixReversePolish {
                 cleanStackBracket();
             } else if (isOpenBracket(token)) {
                 operators.add(token);
+            } else {
+                clearAllValues();
+                throw new Exception("Token is not supported = " + token);
+
             }
-//            } else if (token == '&') {
-//                throw new ArithmeticException("Деление на ноль невозможно ");
-//            } else {
-//                throw new Exception("Token is not supported = " + token);
-//            }
         }
         cleanStackBracket();
         cleanStackOperator();
-
-        System.out.println(evaluation);
-        operators.clear();
         String result = evaluation.toString();
-        evaluation = new StringBuilder();
-        expressions.clear();
-        PolishEvaluator evaluator = new PolishEvaluator();
-        return evaluator.evaluator(result);
+        System.out.println(evaluation);
+        clearAllValues();
+        return evaluator(result);
     }
 
     private void cleanStackBracket() {
@@ -68,6 +63,12 @@ public class InfixReversePolish {
         while (!operators.isEmpty() && !isOpenBracket(operators.peekLast())) {
             evaluation.append(operators.pollLast());
         }
+    }
+
+    private void clearAllValues() {
+        operators.clear();
+        evaluation = new StringBuilder();
+        expressions.clear();
     }
 }
 

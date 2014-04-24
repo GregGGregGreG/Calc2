@@ -15,7 +15,7 @@ public class CalculatorUnitTest {
     }
 
     @Test
-    public void testOperatorPlus() {
+    public void testOperatorPlus() throws Exception {
         Assert.assertTrue(infixReversePolish.parser("2+2") == 4);
     }
 
