@@ -3,8 +3,11 @@ package calc.view.desktop;
 import calc.logic.InfixReversePolish;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,8 +17,8 @@ public class CalculatorView extends JFrame {
 
     private JPanel mainPanel;
 
+    private JFormattedTextField inputField;
     private JTextField expressionBox;
-    private JTextField inputField;
 
     private JButton getNumber0;
     private JButton getNumber1;
@@ -39,6 +42,7 @@ public class CalculatorView extends JFrame {
 
     private JButton getResult;
     private JButton resetButton;
+    private JPanel panleInputField;
 
     private InfixReversePolish infixReversePolish = new InfixReversePolish();
 
@@ -50,20 +54,97 @@ public class CalculatorView extends JFrame {
         pack();
         setTitle("Калькулятор");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        expressionBox.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         setToScreenCenter(this);
+
+
         List<JButton> numberButtons = Arrays.asList(getNumber0, getNumber1, getNumber2, getNumber3,
                 getNumber4, getNumber5, getNumber6, getNumber7, getNumber8, getNumber9, getPointSeparator);
         for (JButton currentButton : numberButtons) {
             currentButton.addActionListener(listenerNumberButtons);
         }
         List<JButton> operatorButtons = Arrays.asList(getOperatorPlus, getOperatorMinus,
-                getOperatorDivision, getOperatorMultiplication, getOpenBracket, getCloseBracket);
+                getOperatorDivision, getOperatorMultiplication);
         for (JButton currentButton : operatorButtons) {
             currentButton.addActionListener(listenerButtonsOperators);
         }
         resetButton.addActionListener(resetCalc);
         getResult.addActionListener(getResultCalc);
+        getOpenBracket.addActionListener(listenerOpenBracket);
+        getCloseBracket.addActionListener(listenerCloseBracket);
+
+        inputField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char key = e.getKeyChar();
+                if (!Character.isDigit(key) && (key != '.')) {
+                    e.consume();
+                }
+            }
+        });
+        BindKey();
     }
+
+    public void BindKey() {
+
+        inputField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "RESULT");
+        mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "RESULT");
+        mainPanel.getActionMap().put("RESULT", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                expressionBox.setText(inputField.getText() + " = ");
+                double resultExpression = infixReversePolish.parser(inputField.getText());
+                int convertNumber = (int) (resultExpression);
+                if (convertNumber == resultExpression) {
+                    inputField.setText(String.valueOf(convertNumber));
+                } else {
+                    inputField.setText(String.valueOf(resultExpression));
+                }
+            }
+        });
+
+        inputField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, 0), "PLUS");
+        mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, 0), "PLUS");
+        inputField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, 0), "PLUS");
+        mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, 0), "PLUS");
+        mainPanel.getActionMap().put("PLUS", new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        inputField.setText(inputField.getText() + " + ");
+                    }
+                }
+        );
+
+        inputField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, 0), "MINUS");
+        mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, 0), "MINUS");
+        inputField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, 0), "MINUS");
+        mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, 0), "MINUS");
+        mainPanel.getActionMap().put("MINUS", new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        inputField.setText(inputField.getText() + " - ");
+                    }
+                }
+        );
+        inputField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_MULTIPLY, 0), "MULTIPLY");
+        mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_MULTIPLY, 0), "MULTIPLY");
+        mainPanel.getActionMap().put("MULTIPLY", new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        inputField.setText(inputField.getText() + " × ");
+                    }
+                }
+        );
+        inputField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_DIVIDE, 0), "DIVIDE");
+        mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DIVIDE, 0), "DIVIDE");
+        mainPanel.getActionMap().put("DIVIDE", new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        inputField.setText(inputField.getText() + " ÷ ");
+                    }
+                }
+        );
+    }
+
 
     private ActionListener listenerNumberButtons = new ActionListener() {
         @Override
@@ -78,6 +159,20 @@ public class CalculatorView extends JFrame {
         public void actionPerformed(ActionEvent e) {
             final JButton source = (JButton) e.getSource();
             inputField.setText(inputField.getText() + " " + source.getText() + " ");
+        }
+    };
+    private ActionListener listenerOpenBracket = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            final JButton source = (JButton) e.getSource();
+            inputField.setText(inputField.getText() + " " + source.getText());
+        }
+    };
+    private ActionListener listenerCloseBracket = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            final JButton source = (JButton) e.getSource();
+            inputField.setText(inputField.getText() + source.getText() + " ");
         }
     };
     private ActionListener getResultCalc = new ActionListener() {
@@ -100,4 +195,6 @@ public class CalculatorView extends JFrame {
             inputField.grabFocus();
         }
     };
+
+
 }

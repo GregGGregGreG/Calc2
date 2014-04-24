@@ -6,18 +6,18 @@ import java.util.LinkedList;
 
 import static calc.logic.CalculationUtil.*;
 
- public class InfixReversePolish {
+public class InfixReversePolish {
     private StringBuilder evaluation = new StringBuilder();
     private Deque<Character> operators = new LinkedList<Character>();
     private Deque<Character> expressions = new ArrayDeque<Character>();
 
     public Double parser(String expression) //throws Exception
-     {
+    {
         String safeExpression = expression.trim().replaceAll(" ", "").replaceAll(",", ".")
                 .replaceAll("--", "+").replaceAll("\\+\\-", "-").replaceAll("\\(\\-", "(0-")
                 .replaceAll("/0 ", "&").replaceAll("^-", "0-")
                 .replaceAll("/-", "/(0-").replaceAll("\\*-", "*(0-").replaceAll("×", "\\*")
-                .replaceAll("÷","\\/");
+                .replaceAll("÷", "\\/");
         char[] chars = safeExpression.toCharArray();
         for (char token : chars) {
             expressions.addLast(token);
@@ -35,7 +35,8 @@ import static calc.logic.CalculationUtil.*;
             } else if (isCloseBracket(token)) {
                 cleanStackBracket();
             } else if (isOpenBracket(token)) {
-                operators.add(token);}
+                operators.add(token);
+            }
 //            } else if (token == '&') {
 //                throw new ArithmeticException("Деление на ноль невозможно ");
 //            } else {
@@ -50,7 +51,6 @@ import static calc.logic.CalculationUtil.*;
         String result = evaluation.toString();
         evaluation = new StringBuilder();
         expressions.clear();
-
         PolishEvaluator evaluator = new PolishEvaluator();
         return evaluator.evaluator(result);
     }
