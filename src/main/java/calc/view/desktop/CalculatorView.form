@@ -33,7 +33,7 @@
               <font name="Helvetica CE" size="18"/>
               <horizontalAlignment value="4"/>
               <inheritsPopupMenu value="false"/>
-              <margin top="1" left="1" bottom="1" right="5"/>
+              <margin top="0" left="0" bottom="0" right="5"/>
               <text value="0"/>
               <toolTipText value=""/>
             </properties>
@@ -68,7 +68,7 @@
           </component>
           <hspacer id="1d029">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="2" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
           </hspacer>
         </children>
@@ -246,15 +246,6 @@
               <text value="+"/>
             </properties>
           </component>
-          <component id="7b740" class="javax.swing.JButton" default-binding="true">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <font name="Helvetica CE" size="15" style="0"/>
-              <text value=""/>
-            </properties>
-          </component>
           <component id="1e80a" class="javax.swing.JButton" binding="getOpenBracket">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -284,7 +275,8 @@
             <properties>
               <background color="-3355444"/>
               <font name="Helvetica CE" size="15" style="0"/>
-              <text value="ce"/>
+              <margin top="3" left="9" bottom="3" right="9"/>
+              <text value="CE"/>
             </properties>
           </component>
           <component id="36b3d" class="javax.swing.JButton" binding="getOperatorDivision">
@@ -303,6 +295,18 @@
             <clientProperties>
               <html.disable class="java.lang.Boolean" value="false"/>
             </clientProperties>
+          </component>
+          <component id="7b740" class="javax.swing.JButton" binding="getPreviousResult">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-3355444"/>
+              <font name="Helvetica CE" size="15" style="0"/>
+              <hideActionText value="false"/>
+              <margin top="2" left="1" bottom="2" right="1"/>
+              <text value="Ans"/>
+            </properties>
           </component>
         </children>
       </grid>
