@@ -39,7 +39,6 @@ public class InfixReversePolish {
             } else {
                 clearAllValues();
                 throw new Exception("Token is not supported = " + token);
-
             }
         }
         cleanStackBracket();
@@ -57,7 +56,9 @@ public class InfixReversePolish {
             evaluation.append(lastOperator = operators.pollLast());
         }
     }
-
+      /*
+      Defecating stack operators to open bracket opereta inclusive.
+       */
     private void cleanStackOperator() {
         evaluation.append(' ');
         while (!operators.isEmpty() && !isOpenBracket(operators.peekLast())) {
