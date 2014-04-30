@@ -1,5 +1,7 @@
 package calc.view.desktop;
 
+import calc.logic.CalculationUtil;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,58 +13,69 @@ public class CalculatorEventImpl implements CalculatorEvent {
     @Override
     public ActionListener listenerNumberPoint() {
         return new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
+                CalculatorView calView = (CalculatorView) ApplicationContext.getBean("calculatorView");
+                String expression = calView.getInputText();
                 final JButton source = (JButton) e.getSource();
-                CalculatorView calculatorView = (CalculatorView) ApplicationContext.getInstance().getBean("calculatorView");
-                calculatorView.setInputText(calculatorView.getInputText() + source.getText());
+                if (expression.equals("0")) calView.setInputText("0");
+                else calView.setInputText(calView.getInputText() + source.getText());
             }
         };
     }
 
-//    public final ActionListener listenerNumberZero = new ActionListener() {
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//            final JButton source = (JButton) e.getSource();
-//            String expression = inputField.getText();
-//            if (expression.equals("0")) inputField.setText("0");
-//            else inputField.setText(inputField.getText() + source.getText());
-//        }
-//    };
-//
-//    public final ActionListener listenerNumberButtons = new ActionListener() {
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//            CalculatorView calculatorView = (CalculatorView) ApplicationContext.getInstance().getBean("calculatorView");
-//            final JButton source = (JButton) e.getSource();
-//            if (calculatorView.getInputText().equals(String.valueOf(calculatorView.getMemory())) || expressionBox.getText().length() == 0) {
-//                String expression = inputField.getText();
-//                if (expression.equals("0")) inputField.setText(source.getText());
-//                else inputField.setText(inputField.getText() + source.getText());
-//            } else {
-//
-//                expressionBox.setText(String.valueOf(memoryCalc));
-//                inputField.setText(source.getText());
-//            }
-//        }
-//    };
-//
-//    public final ActionListener listenerButtonsOperators = new ActionListener() {
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//            final JButton source = (JButton) e.getSource();
-//            if (expressionBox.getText().equals(String.valueOf(memoryCalc)) || expressionBox.getText().length() == 0) {
-//                String expression = inputField.getText();
-//                if (expression.equals("0")) inputField.setText("0");
-//                else inputField.setText(inputField.getText() + " " + source.getText() + " ");
-//
-//            } else {
-//                expressionBox.setText(String.valueOf(memoryCalc));
-//                inputField.setText(inputField.getText() + " " + source.getText() + " ");
-//            }
-//        }
-//    };
-//
+    @Override
+    public ActionListener listenerNumberZero() {
+        return new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CalculatorView calView = (CalculatorView) ApplicationContext.getBean("calculatorView");
+                final JButton source = (JButton) e.getSource();
+                String expression = calView.getInputText();
+                if (expression.equals("0")) calView.setInputText("0");
+                else calView.setInputText(calView.getInputText() + source.getText());
+            }
+        };
+    }
+
+    @Override
+    public ActionListener listenerNumberButtons() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CalculatorView calView = (CalculatorView) ApplicationContext.getBean("calculatorView");
+                final JButton source = (JButton) e.getSource();
+                String expression = calView.getInputText();
+                if (calView.getInputText().equals(calView.getMemory().toString()) || calView.getExpressionText().length() == 0) {
+                    if (expression.equals("0")) calView.setInputText(source.getText());
+                    else calView.setInputText(calView.getInputText() + source.getText());
+                } else {
+                    calView.setExpressionText(String.valueOf(calView.getMemory()));
+                    calView.setInputText(source.getText());
+                }
+            }
+        };
+    }
+
+    @Override
+    public ActionListener listenerButtonsOperators() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CalculatorView calView = (CalculatorView) ApplicationContext.getBean("calculatorView");
+                final JButton source = (JButton) e.getSource();
+                if (calView.getExpressionText().equals(calView.getMemory().toString()) || calView.getExpressionText().length() == 0) {
+                    String expression = calView.getInputText();
+                    if (expression.equals("0")) calView.setInputText("0");
+                    else calView.setInputText(calView.getInputText() + " " + source.getText() + " ");
+                } else {
+                    calView.setExpressionText(String.valueOf(calView.getMemory()));
+                    calView.setInputText(calView.getInputText() + " " + source.getText() + " ");
+                }
+            }
+        };
+    }
+
+    //
 //    private ActionListener listenerOpenBracket = new ActionListener() {
 //        @Override
 //        public void actionPerformed(ActionEvent e) {
@@ -85,13 +98,15 @@ public class CalculatorEventImpl implements CalculatorEvent {
 //    public final ActionListener getResultCalc = new ActionListener() {
 //        @Override
 //        public void actionPerformed(ActionEvent e) {
-//            expressionBox.setText(inputField.getText() + " = ");
+//            InfixReversePolish infixReversePolish = new InfixReversePolish();
+//            CalculatorView calView = (CalculatorView) ApplicationContext.getInstance().getBean("calculatorView");
+//            calView.setExpressionText(calView.getInputText() + " = ");
 //            try {
-//                double resultExpression = infixReversePolish.parser(inputField.getText());
+//                double resultExpression = infixReversePolish.parser(calView.getInputText());
 //                int convertNumber = (int) (resultExpression);
 //                if (convertNumber == resultExpression) {
 //                    memoryCalc = new StringBuilder();
-//                    inputField.setText(String.valueOf(convertNumber));
+//                    calView.setInputText(String.valueOf(convertNumber));
 //                    memoryCalc.append("Ans = " + String.valueOf(convertNumber));
 //                    System.out.println(memoryCalc);
 //                } else {
@@ -100,24 +115,27 @@ public class CalculatorEventImpl implements CalculatorEvent {
 //                    memoryCalc.append("Ans = " + String.valueOf(resultExpression));
 //                }
 //            } catch (NullPointerException e1) {
-//                inputField.setText("Invalid expression");
-//                expressionBox.setText("");
+//                calView.setInputText("Invalid expression");
+//                calView.setExpressionText("");
 //                e1.printStackTrace();
 //            } catch (Exception e1) {
-//                inputField.setText("Symbol is not supported");
-//                expressionBox.setText("");
+//                calView.setInputText("Symbol is not supported");
+//                calView.setExpressionText("");
 //                e1.printStackTrace();
 //            }
 //        }
 //    };
-//    public final ActionListener resetCalc = new ActionListener() {
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//            expressionBox.setText(String.valueOf(memoryCalc));
-//            inputField.setText("0");
-//            inputField.grabFocus();
-//        }
-//    };
+
+    public ActionListener resetCalc() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CalculatorView calView = (CalculatorView) ApplicationContext.getBean("calculatorView");
+                calView.setExpressionText(calView.getMemory());
+                calView.setInputText("0");
+            }
+        };
+    }
 //    public final ActionListener getAnsResultCalc = new ActionListener() {
 //        @Override
 //        public void actionPerformed(ActionEvent e) {
@@ -128,4 +146,27 @@ public class CalculatorEventImpl implements CalculatorEvent {
 //            } else inputField.setText(inputField.getText() + memoryCalc.delete(0, 5));
 //        }
 //    };
+
+    public AbstractAction createActionNumber(final Character operator) {
+        return new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CalculatorView calView = (CalculatorView) ApplicationContext.getBean("calculatorView");
+                String text = String.valueOf(operator);
+                String inputText = calView.getInputText();
+                if (calView.getExpressionText().equals(calView.getMemory()) || calView.getExpressionText().length() == 0) {
+                    String expression = inputText;
+                    if (expression.equals("0")) calView.setInputText(text);
+                    else if (CalculationUtil.isOperators(operator)) {
+                        calView.setInputText(inputText + " " + text + " ");
+                    } else if (!expression.equals("0")) {
+                        calView.setInputText(inputText + text);
+                    }
+                } else {
+                    calView.setExpressionText(calView.getMemory());
+                    calView.setInputText(text);
+                }
+            }
+        };
+    }
 }

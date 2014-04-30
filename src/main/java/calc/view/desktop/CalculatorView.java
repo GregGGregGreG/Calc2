@@ -4,15 +4,21 @@ package calc.view.desktop;
  * Created by GREG on 28.04.2014.
  */
 public interface CalculatorView {
-    void setInputText(String text);
-
     String getInputText();
 
-    void setExpressionText(String text);
+    void setInputText(String text);
 
     String getExpressionText();
 
-    void setMemory(String text);
+    void setExpressionText(String text);
 
     String getMemory();
+
+    void setMemory(String text);
+
+    void addMemory(String text);
+
+
+
+
 }

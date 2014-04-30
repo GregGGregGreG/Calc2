@@ -9,8 +9,7 @@ public class CalculatorRun implements Runnable {
 
     @Override
     public void run() {
-        final ApplicationContext instance = ApplicationContext.getInstance();
-        instance.setBean("calculatorEvent", new CalculatorEventImpl());
-        instance.setBean("calculatorView", new CalculatorViewForm());
+        ApplicationContext.setBean("calculatorEvent", new CalculatorEventImpl());
+        ApplicationContext.setBean("calculatorView", new CalculatorViewForm());
     }
 }

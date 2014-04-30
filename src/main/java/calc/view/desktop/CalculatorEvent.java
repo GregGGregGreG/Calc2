@@ -1,5 +1,6 @@
 package calc.view.desktop;
 
+import javax.swing.*;
 import java.awt.event.ActionListener;
 
 /**
@@ -8,5 +9,15 @@ import java.awt.event.ActionListener;
 public interface CalculatorEvent {
 
     ActionListener listenerNumberPoint();
+
+    ActionListener listenerNumberZero();
+
+    ActionListener listenerNumberButtons();
+
+    ActionListener listenerButtonsOperators();
+
+    ActionListener resetCalc();
+
+    AbstractAction createActionNumber(Character param);
 
 }

@@ -1,6 +1,9 @@
 package calc.logic;
 
 public class CalculationUtil {
+    private CalculationUtil() {
+    }
+
     public static Double calculation(Character token, Double right, Double left) {
         if (isPlus(token)) return left + right;
         if (isMinus(token)) return left - right;

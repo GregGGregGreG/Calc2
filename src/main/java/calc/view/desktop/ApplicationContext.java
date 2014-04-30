@@ -7,7 +7,7 @@ import java.util.Map;
  * Created by GREG on 28.04.2014.
  */
 public class ApplicationContext {
-    public final Map<String, Object> context = new HashMap<>();
+    protected final Map<String, Object> context = new HashMap<>();
 
     private ApplicationContext() {
     }
@@ -20,11 +20,11 @@ public class ApplicationContext {
         return SingletonHolder.HOLDER_INSTANCE;
     }
 
-    public Object getBean(String name) {
-        return context.get(name);
+    public static Object getBean(String name) {
+        return getInstance().context.get(name);
     }
 
-    public void setBean(String name, Object object) {
-        context.put(name, object);
+    public static void setBean(String name, Object object) {
+        getInstance().context.put(name, object);
     }
 }
