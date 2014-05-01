@@ -14,35 +14,35 @@ import static calc.view.desktop.CalculatorUtil.setToScreenCenter;
 
 
 public class CalculatorViewForm extends JFrame implements CalculatorView, Serializable {
-    public static final Map<Integer, Character> buttons = new HashMap<>();
+    public static final Map<Integer, Character> bindButtons = new HashMap<>();
 
     static {
-        buttons.put(KeyEvent.VK_0, '0');
-        buttons.put(KeyEvent.VK_1, '1');
-        buttons.put(KeyEvent.VK_2, '2');
-        buttons.put(KeyEvent.VK_3, '3');
-        buttons.put(KeyEvent.VK_4, '4');
-        buttons.put(KeyEvent.VK_5, '5');
-        buttons.put(KeyEvent.VK_6, '6');
-        buttons.put(KeyEvent.VK_7, '7');
-        buttons.put(KeyEvent.VK_8, '8');
-        buttons.put(KeyEvent.VK_9, '9');
-        buttons.put(KeyEvent.VK_NUMPAD0, '0');
-        buttons.put(KeyEvent.VK_NUMPAD1, '1');
-        buttons.put(KeyEvent.VK_NUMPAD2, '2');
-        buttons.put(KeyEvent.VK_NUMPAD3, '3');
-        buttons.put(KeyEvent.VK_NUMPAD4, '4');
-        buttons.put(KeyEvent.VK_NUMPAD5, '5');
-        buttons.put(KeyEvent.VK_NUMPAD6, '6');
-        buttons.put(KeyEvent.VK_NUMPAD7, '7');
-        buttons.put(KeyEvent.VK_NUMPAD8, '8');
-        buttons.put(KeyEvent.VK_NUMPAD9, '9');
-        buttons.put(KeyEvent.VK_ADD, '+');
-        buttons.put(KeyEvent.VK_EQUALS, '+');
-        buttons.put(KeyEvent.VK_MINUS, '-');
-        buttons.put(KeyEvent.VK_SUBTRACT, '-');
-        buttons.put(KeyEvent.VK_MULTIPLY, '*');
-        buttons.put(KeyEvent.VK_DIVIDE, '/');
+        bindButtons.put(KeyEvent.VK_0, '0');
+        bindButtons.put(KeyEvent.VK_1, '1');
+        bindButtons.put(KeyEvent.VK_2, '2');
+        bindButtons.put(KeyEvent.VK_3, '3');
+        bindButtons.put(KeyEvent.VK_4, '4');
+        bindButtons.put(KeyEvent.VK_5, '5');
+        bindButtons.put(KeyEvent.VK_6, '6');
+        bindButtons.put(KeyEvent.VK_7, '7');
+        bindButtons.put(KeyEvent.VK_8, '8');
+        bindButtons.put(KeyEvent.VK_9, '9');
+        bindButtons.put(KeyEvent.VK_NUMPAD0, '0');
+        bindButtons.put(KeyEvent.VK_NUMPAD1, '1');
+        bindButtons.put(KeyEvent.VK_NUMPAD2, '2');
+        bindButtons.put(KeyEvent.VK_NUMPAD3, '3');
+        bindButtons.put(KeyEvent.VK_NUMPAD4, '4');
+        bindButtons.put(KeyEvent.VK_NUMPAD5, '5');
+        bindButtons.put(KeyEvent.VK_NUMPAD6, '6');
+        bindButtons.put(KeyEvent.VK_NUMPAD7, '7');
+        bindButtons.put(KeyEvent.VK_NUMPAD8, '8');
+        bindButtons.put(KeyEvent.VK_NUMPAD9, '9');
+        bindButtons.put(KeyEvent.VK_ADD, '+');
+        bindButtons.put(KeyEvent.VK_EQUALS, '+');
+        bindButtons.put(KeyEvent.VK_MINUS, '-');
+        bindButtons.put(KeyEvent.VK_SUBTRACT, '-');
+        bindButtons.put(KeyEvent.VK_MULTIPLY, '*');
+        bindButtons.put(KeyEvent.VK_DIVIDE, '/');
     }
 
     public JPanel mainPanel;
@@ -93,24 +93,17 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
             }
         });
 
-        List<JButton> getNumbers = Arrays.asList(getNumber1, getNumber2, getNumber3, getNumber4,
-                getNumber5, getNumber6, getNumber7, getNumber8, getNumber9);
+        List<JButton> getNumbers = Arrays.asList(getNumber0, getNumber1, getNumber2, getNumber3, getNumber4,
+                getNumber5, getNumber6, getNumber7, getNumber8, getNumber9,
+                getOperatorPlus, getOperatorMinus, getOperatorDivision, getOperatorMultiplication, getPointSeparator,
+                getOpenBracket, getCloseBracket);
         for (JButton getNUmber : getNumbers) {
-            getNUmber.addActionListener(calEvent.listenerNumberButtons());
-        }
-        List<JButton> getOperators = Arrays.asList(getOperatorPlus, getOperatorMinus,
-                getOperatorDivision, getOperatorMultiplication);
-        for (JButton getOperator : getOperators) {
-            getOperator.addActionListener(calEvent.listenerButtonsOperators());
+            getNUmber.addActionListener(calEvent.listenerNumberAndButtonsOperators());
         }
 
-        getNumber0.addActionListener(calEvent.listenerNumberZero());
         resetButton.addActionListener(calEvent.resetCalc());
-//        getResult.addActionListener(getResultCalc);
-//        getOpenBracket.addActionListener(listenerOpenBracket);
-//        getCloseBracket.addActionListener(listenerCloseBracket);
-        getPointSeparator.addActionListener(calEvent.listenerNumberPoint());
-//        getPreviousResult.addActionListener(getAnsResultCalc);
+       // getResult.addActionListener(calEvent.getResultCalc());
+        //   getPreviousResult.addActionListener(getAnsResultCalc);
 
         BindKey();
     }
@@ -122,64 +115,14 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
         InputMap mainInputMap = mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         ActionMap actionMap = mainPanel.getActionMap();
-        for (Map.Entry<Integer, Character> entry : buttons.entrySet()) {
+        for (Map.Entry<Integer, Character> entry : bindButtons.entrySet()) {
             Integer entryKey = entry.getKey();
             Character operator = entry.getValue();
-            String actionName = "action" +operator;
+            String actionName = "action" + operator;
             inputFieldMap.put(KeyStroke.getKeyStroke(entryKey, 0), actionName);
             mainInputMap.put(KeyStroke.getKeyStroke(entryKey, 0), actionName);
             actionMap.put(actionName, calEvent.createActionNumber(operator));
         }
-
-//        inputField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD1, 0), "NUMPAD1");
-//        mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD1, 0), "NUMPAD1");
-//        mainPanel.getActionMap().put("NUMPAD1", new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if (expressionBox.getText().equals(String.valueOf(memoryCalc)) || expressionBox.getText().length() == 0) {
-//                    String expression = inputField.getText();
-//                    if (expression.equals("0")) inputField.setText("1");
-//                    else inputField.setText(inputField.getText() + "1");
-//                } else {
-//                    expressionBox.setText(String.valueOf(memoryCalc));
-//                    inputField.setText("1");
-//                }
-//            }
-//        });
-
-//        inputField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "RESULT");
-//        mainInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "RESULT");
-//        mainPanel.getActionMap().put("RESULT", new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                expressionBox.setText(inputField.getText() + " = ");
-//                try {
-//                    double resultExpression = infixReversePolish.parser(inputField.getText());
-//                    int convertNumber = (int) (resultExpression);
-//                    if (convertNumber == resultExpression) {
-//                        memoryCalc = new StringBuilder();
-//                        inputField.setText(String.valueOf(convertNumber));
-//                        memoryCalc.append("Ans = " + String.valueOf(convertNumber));
-//                        System.out.println(memoryCalc);
-//                    } else {
-//                        memoryCalc = new StringBuilder();
-//                        inputField.setText(String.valueOf(resultExpression));
-//                        memoryCalc.append("Ans = " + String.valueOf(resultExpression));
-//                    }
-//                } catch (NullPointerException e1) {
-//                    inputField.setText("Invalid expression");
-//                    expressionBox.setText("");
-//                    e1.printStackTrace();
-//                } catch (Exception e1) {
-//                    inputField.setText("Symbol is not supported");
-//                    expressionBox.setText("");
-//                    e1.printStackTrace();
-//
-//                }
-//            }
-//        });
-//
-//
     }
 
 
@@ -213,11 +156,4 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
     public void setMemory(String text) {
         memoryCalc.append(text);
     }
-
-    @Override
-    public void addMemory(String text) {
-        memoryCalc.append(text);
-    }
-
-
 }

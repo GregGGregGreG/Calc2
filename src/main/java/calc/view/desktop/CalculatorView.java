@@ -1,8 +1,5 @@
 package calc.view.desktop;
 
-/**
- * Created by GREG on 28.04.2014.
- */
 public interface CalculatorView {
     String getInputText();
 
@@ -15,10 +12,4 @@ public interface CalculatorView {
     String getMemory();
 
     void setMemory(String text);
-
-    void addMemory(String text);
-
-
-
-
 }

@@ -8,16 +8,12 @@ import java.awt.event.ActionListener;
  */
 public interface CalculatorEvent {
 
-    ActionListener listenerNumberPoint();
+    ActionListener listenerNumberAndButtonsOperators();
 
-    ActionListener listenerNumberZero();
-
-    ActionListener listenerNumberButtons();
-
-    ActionListener listenerButtonsOperators();
+    AbstractAction createActionNumber(Character param);
 
     ActionListener resetCalc();
 
-    AbstractAction createActionNumber(Character param);
+    //ActionListener getResultCalc();
 
 }
