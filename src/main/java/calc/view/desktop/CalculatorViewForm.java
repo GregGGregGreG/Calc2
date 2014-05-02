@@ -43,10 +43,11 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
         bindButtons.put(KeyEvent.VK_SUBTRACT, '-');
         bindButtons.put(KeyEvent.VK_MULTIPLY, '*');
         bindButtons.put(KeyEvent.VK_DIVIDE, '/');
+        bindButtons.put(KeyEvent.VK_ENTER,'=');
     }
 
     public JPanel mainPanel;
-    public JTextField inputField;
+    public JFormattedTextField inputField;
     public JTextField expressionBox;
     public StringBuilder memoryCalc = new StringBuilder();
     private JButton getNumber0;
@@ -72,9 +73,10 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
 
     public CalculatorViewForm() {
         setContentPane(mainPanel);
+        setTitle("Калькулятор");
         setVisible(true);
         pack();
-        setTitle("Калькулятор");
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         expressionBox.setBorder(BorderFactory.createLineBorder(Color.WHITE));
@@ -96,13 +98,13 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
         List<JButton> getNumbers = Arrays.asList(getNumber0, getNumber1, getNumber2, getNumber3, getNumber4,
                 getNumber5, getNumber6, getNumber7, getNumber8, getNumber9,
                 getOperatorPlus, getOperatorMinus, getOperatorDivision, getOperatorMultiplication, getPointSeparator,
-                getOpenBracket, getCloseBracket);
+                getOpenBracket, getCloseBracket,getResult);
         for (JButton getNUmber : getNumbers) {
             getNUmber.addActionListener(calEvent.listenerNumberAndButtonsOperators());
         }
 
         resetButton.addActionListener(calEvent.resetCalc());
-       // getResult.addActionListener(calEvent.getResultCalc());
+        //getResult.addActionListener(calEvent.getResultCalc());
         //   getPreviousResult.addActionListener(getAnsResultCalc);
 
         BindKey();
@@ -155,5 +157,9 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
     @Override
     public void setMemory(String text) {
         memoryCalc.append(text);
+    }
+    @Override
+    public void cleanMemory() {
+        memoryCalc = new StringBuilder();
     }
 }

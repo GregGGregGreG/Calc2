@@ -1,5 +1,8 @@
 package calc.logic;
 
+import calc.exception.ExceptionInfixReversPolish;
+import calc.exception.ExceptionPolishEvaluator;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -8,11 +11,12 @@ import static calc.logic.CalculationUtil.*;
 import static calc.logic.PolishEvaluator.evaluator;
 
 public class InfixReversePolish {
-    private StringBuilder evaluation = new StringBuilder();
-    private Deque<Character> operators = new LinkedList<Character>();
-    private Deque<Character> expressions = new ArrayDeque<Character>();
+    private static StringBuilder evaluation = new StringBuilder();
+    private static Deque<Character> operators = new LinkedList<Character>();
+    private static Deque<Character> expressions = new ArrayDeque<Character>();
 
-    public Double parser(String expression) throws Exception {
+
+    public static Double parser(String expression) throws ExceptionPolishEvaluator,ExceptionInfixReversPolish {
         String safeExpression = expression.trim().replaceAll(" ", "").replaceAll(",", ".")
                 .replaceAll("--", "+").replaceAll("\\+\\-", "-").replaceAll("\\(\\-", "(0-")
                 .replaceAll("/0 ", "&").replaceAll("^-", "0-")
@@ -38,7 +42,7 @@ public class InfixReversePolish {
                 operators.add(token);
             } else {
                 clearAllValues();
-                throw new Exception("Token is not supported = " + token);
+                throw new ExceptionInfixReversPolish("Token is not supported = " + token);
             }
         }
         cleanStackBracket();
@@ -49,27 +53,27 @@ public class InfixReversePolish {
         return evaluator(result);
     }
 
-    private void cleanStackBracket() {
+    private static void cleanStackBracket() {
         evaluation.append(' ');
         char lastOperator = ' ';
         while (!(isOpenBracket(lastOperator)) && !(operators.isEmpty())) {
             evaluation.append(lastOperator = operators.pollLast());
         }
     }
-      /*
-      Defecating stack operators to open bracket opereta inclusive.
-       */
-    private void cleanStackOperator() {
+
+    /*
+    Defecating stack operators to open bracket opereta inclusive.
+     */
+    private static void cleanStackOperator() {
         evaluation.append(' ');
         while (!operators.isEmpty() && !isOpenBracket(operators.peekLast())) {
             evaluation.append(operators.pollLast());
         }
     }
 
-    private void clearAllValues() {
+    private static void clearAllValues() {
         operators.clear();
         evaluation = new StringBuilder();
         expressions.clear();
     }
 }
-

@@ -14,6 +14,6 @@ public interface CalculatorEvent {
 
     ActionListener resetCalc();
 
-    //ActionListener getResultCalc();
+//    ActionListener getResultCalc();
 
 }

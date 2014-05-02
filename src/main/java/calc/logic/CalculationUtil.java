@@ -1,18 +1,18 @@
 package calc.logic;
 
+
 public class CalculationUtil {
     private CalculationUtil() {
     }
 
     public static Double calculation(Character token, Double right, Double left) {
+
         if (isPlus(token)) return left + right;
         if (isMinus(token)) return left - right;
         if (isMultiply(token)) return left * right;
-        if (isDivision(token)) return left / right;
-        else {
-            throw new RuntimeException("Operation is not supported = " + token);
-        }
+        else return left / right;
     }
+
 
     public static boolean isOperators(char token) {
         return isPriority(token) || isNotPriority(token);

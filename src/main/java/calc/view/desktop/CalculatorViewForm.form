@@ -23,7 +23,7 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="18856" class="javax.swing.JTextField" binding="inputField">
+          <component id="2ad49" class="javax.swing.JFormattedTextField" binding="inputField">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="4" hsize-policy="0" anchor="8" fill="3" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="10"/>
@@ -278,6 +278,9 @@
               <margin top="3" left="9" bottom="3" right="9"/>
               <text value="CE"/>
             </properties>
+            <clientProperties>
+              <hideActionText class="java.lang.Boolean" value="true"/>
+            </clientProperties>
           </component>
           <component id="36b3d" class="javax.swing.JButton" binding="getOperatorDivision">
             <constraints>
