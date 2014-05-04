@@ -1,6 +1,6 @@
 package calc.logic;
 
-import calc.exception.ExceptionPolishEvaluator;
+import calc.exceptions.ExceptionPolishEvaluator;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

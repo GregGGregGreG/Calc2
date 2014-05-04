@@ -1,4 +1,4 @@
-package calc.exception;
+package calc.exceptions;
 
 public class ExceptionInfixReversPolish extends Exception {
 

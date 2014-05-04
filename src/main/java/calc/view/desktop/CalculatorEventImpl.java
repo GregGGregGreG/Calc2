@@ -1,7 +1,7 @@
 package calc.view.desktop;
 
-import calc.exception.ExceptionInfixReversPolish;
-import calc.exception.ExceptionPolishEvaluator;
+import calc.exceptions.ExceptionInfixReversPolish;
+import calc.exceptions.ExceptionPolishEvaluator;
 import calc.logic.CalculationUtil;
 import calc.logic.InfixReversePolish;
 
