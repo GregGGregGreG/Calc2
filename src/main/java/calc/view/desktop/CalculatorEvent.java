@@ -2,18 +2,18 @@ package calc.view.desktop;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 
-/**
- * Created by GREG on 29.04.2014.
- */
 public interface CalculatorEvent {
 
-    ActionListener listenerNumberAndButtonsOperators();
+    ActionListener eventsCalcViewFormButtons();
 
-    AbstractAction createActionNumber(Character param);
+    AbstractAction eventsBindingButtonsKeyboard(Character param);
 
     ActionListener resetCalc();
 
-//    ActionListener getResultCalc();
+    ActionListener getResultCalc();
+
+    KeyAdapter keyBlock();
 
 }

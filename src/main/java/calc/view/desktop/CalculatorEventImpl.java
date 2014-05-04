@@ -8,10 +8,26 @@ import calc.logic.InfixReversePolish;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 public class CalculatorEventImpl implements CalculatorEvent {
+    private boolean addOperator = false;
+    private boolean addPoint = true;
 
+    public KeyAdapter keyBlock() {
+        return new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                Character key = e.getKeyChar();
+                if (!(key == '.'))
+
+                    e.consume();
+                addPoint = false;
+            }
+
+        };
+    }
 
     public ActionListener resetCalc() {
         return new ActionListener() {
@@ -20,6 +36,17 @@ public class CalculatorEventImpl implements CalculatorEvent {
                 CalculatorView calView = (CalculatorView) ApplicationContext.getBean("calculatorView");
                 calView.setExpressionText(calView.getMemory());
                 calView.setInputText("0");
+                addOperator = false;
+            }
+        };
+    }
+
+    @Override
+    public AbstractAction getResultCalc() {
+        return new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                result();
             }
         };
     }
@@ -35,8 +62,9 @@ public class CalculatorEventImpl implements CalculatorEvent {
 //            } else inputField.setText(inputField.getText() + memoryCalc.delete(0, 5));
 //        }
 //    };
+
     @Override
-    public ActionListener listenerNumberAndButtonsOperators() {
+    public ActionListener eventsCalcViewFormButtons() {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -48,7 +76,8 @@ public class CalculatorEventImpl implements CalculatorEvent {
         };
     }
 
-    public AbstractAction createActionNumber(final Character operator) {
+    @Override
+    public AbstractAction eventsBindingButtonsKeyboard(final Character operator) {
         return new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,21 +91,57 @@ public class CalculatorEventImpl implements CalculatorEvent {
         String text = String.valueOf(operator);
         String inputText = calView.getInputText();
         if (calView.getExpressionText().equals(calView.getMemory()) || calView.getExpressionText().length() == 0) {
-            if (inputText.equals("0") && !operator.equals('=')) calView.setInputText(text);
-            if (inputText.equals("0") && operator.equals('=')) calView.setInputText("0");
-            else if (Character.isDigit(operator)) digit(calView, text);
+            if (Character.isDigit(operator)) digit(calView, text, inputText);
             else if (CalculationUtil.isOperators(operator)) operator(calView, text);
             else if (CalculationUtil.isOpenBracket(operator)) openBracket(calView, text);
             else if (CalculationUtil.isCloseBracket(operator)) closeBracket(calView, text);
-            else if (operator.equals('=')) result(calView);
+            else if (operator == '.') point(calView, text);
         } else {
             calView.setExpressionText(calView.getMemory());
-            calView.setInputText(text);
+            if (CalculationUtil.isOperators(operator)) operator(calView, text);
+            else calView.setInputText(text);
         }
     }
 
-    private void result(CalculatorView calcView) {
+    private void point(CalculatorView calcView, String text) {
+        if (addPoint) {
+            calcView.setInputText(calcView.getInputText() + text);
+            addPoint = false;
+        }
+    }
 
+    private void openBracket(CalculatorView calcView, String text) {
+        calcView.setInputText(calcView.getInputText() + " " + text);
+    }
+
+    private void closeBracket(CalculatorView calcView, String text) {
+        calcView.setInputText(calcView.getInputText() + text + " ");
+    }
+
+    private void operator(CalculatorView calcView, String text) {
+        if (addOperator) {
+            calcView.setInputText(calcView.getInputText() + " " + text + " ");
+            addOperator = false;
+            addPoint = true;
+        }
+    }
+
+    private void digit(CalculatorView calcView, String text, String inputText) {
+        if (inputText.equals("0")) calcView.setInputText(text);
+        else calcView.setInputText(calcView.getInputText() + text);
+        addOperator = true;
+        addPoint = true;
+    }
+
+    private void result() {
+
+        CalculatorView calcView = (CalculatorView) ApplicationContext.getBean("calculatorView");
+        if (calcView.getInputText().length() == 1) {
+            return;
+        }
+        if (calcView.getInputText().equals(calcView.getMemory())) {
+            return;
+        }
         calcView.setExpressionText(calcView.getInputText() + " = ");
         try {
             double resultExpression = InfixReversePolish.parser(calcView.getInputText());
@@ -98,21 +163,5 @@ public class CalculatorEventImpl implements CalculatorEvent {
             calcView.setExpressionText("Invalid expression");
             e1.printStackTrace();
         }
-    }
-
-    private void openBracket(CalculatorView calcView, String text) {
-        calcView.setInputText(calcView.getInputText() + " " + text);
-    }
-
-    private void closeBracket(CalculatorView calcView, String text) {
-        calcView.setInputText(calcView.getInputText() + text + " ");
-    }
-
-    private void operator(CalculatorView calcView, String text) {
-        calcView.setInputText(calcView.getInputText() + " " + text + " ");
-    }
-
-    private void digit(CalculatorView calcView, String text) {
-        calcView.setInputText(calcView.getInputText() + text);
     }
 }

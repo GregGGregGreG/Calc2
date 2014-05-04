@@ -35,11 +35,11 @@ public class CalculationUtil {
     }
 
     public static boolean isMultiply(char token) {
-        return token == '*';
+        return token == '*' || token == '×';
     }
 
     public static boolean isDivision(char token) {
-        return token == '/';
+        return token == '/' || token == '÷';
     }
 
     public static boolean isOpenBracket(char token) {

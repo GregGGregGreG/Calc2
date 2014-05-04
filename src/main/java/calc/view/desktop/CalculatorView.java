@@ -13,5 +13,5 @@ public interface CalculatorView {
 
     void setMemory(String text);
 
-    public void cleanMemory();
+    void cleanMemory();
 }

@@ -2,7 +2,6 @@ package calc.view.desktop;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -41,15 +40,17 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
         bindButtons.put(KeyEvent.VK_EQUALS, '+');
         bindButtons.put(KeyEvent.VK_MINUS, '-');
         bindButtons.put(KeyEvent.VK_SUBTRACT, '-');
-        bindButtons.put(KeyEvent.VK_MULTIPLY, '*');
-        bindButtons.put(KeyEvent.VK_DIVIDE, '/');
-        bindButtons.put(KeyEvent.VK_ENTER,'=');
+        bindButtons.put(KeyEvent.VK_MULTIPLY, '×');
+        bindButtons.put(KeyEvent.VK_DIVIDE, '÷');
+        bindButtons.put(KeyEvent.VK_PERIOD, '.');
+
     }
 
     public JPanel mainPanel;
     public JFormattedTextField inputField;
     public JTextField expressionBox;
     public StringBuilder memoryCalc = new StringBuilder();
+    private CalculatorEvent calEvent = (CalculatorEvent) ApplicationContext.getBean("calculatorEvent");
     private JButton getNumber0;
     private JButton getNumber1;
     private JButton getNumber2;
@@ -76,57 +77,49 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
         setTitle("Калькулятор");
         setVisible(true);
         pack();
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         expressionBox.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         inputField.setBorder(BorderFactory.createLineBorder(Color.WHITE));
-
         setToScreenCenter(this);
+        inputField.addKeyListener(calEvent.keyBlock());
+        calcViewFormButtons();
+        bindingButtonsKeyboard();
+    }
 
-        CalculatorEvent calEvent = (CalculatorEvent) ApplicationContext.getBean("calculatorEvent");
-
-        inputField.addKeyListener(new KeyAdapter() {
-            public void keyTyped(KeyEvent e) {
-                char key = e.getKeyChar();
-                if ((key != '.')) {
-                    e.consume();
-                }
-            }
-        });
-
-        List<JButton> getNumbers = Arrays.asList(getNumber0, getNumber1, getNumber2, getNumber3, getNumber4,
-                getNumber5, getNumber6, getNumber7, getNumber8, getNumber9,
-                getOperatorPlus, getOperatorMinus, getOperatorDivision, getOperatorMultiplication, getPointSeparator,
-                getOpenBracket, getCloseBracket,getResult);
-        for (JButton getNUmber : getNumbers) {
-            getNUmber.addActionListener(calEvent.listenerNumberAndButtonsOperators());
+    private void calcViewFormButtons() {
+        List<JButton> viewFormButtons = Arrays.asList(getNumber0, getNumber1, getNumber2, getNumber3, getNumber4,
+                getNumber5, getNumber6, getNumber7, getNumber8, getNumber9, getOperatorPlus, getOperatorMinus,
+                getOperatorDivision, getOperatorMultiplication, getPointSeparator, getOpenBracket, getCloseBracket);
+        for (JButton setNumber : viewFormButtons) {
+            setNumber.addActionListener(calEvent.eventsCalcViewFormButtons());
         }
 
         resetButton.addActionListener(calEvent.resetCalc());
-        //getResult.addActionListener(calEvent.getResultCalc());
+        getResult.addActionListener(calEvent.getResultCalc());
         //   getPreviousResult.addActionListener(getAnsResultCalc);
-
-        BindKey();
     }
 
-    public void BindKey() {
+    private void bindingButtonsKeyboard() {
 
-        CalculatorEvent calEvent = (CalculatorEvent) ApplicationContext.getBean("calculatorEvent");
-        InputMap inputFieldMap = inputField.getInputMap(JComponent.WHEN_FOCUSED);
-        InputMap mainInputMap = mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-        ActionMap actionMap = mainPanel.getActionMap();
         for (Map.Entry<Integer, Character> entry : bindButtons.entrySet()) {
             Integer entryKey = entry.getKey();
             Character operator = entry.getValue();
             String actionName = "action" + operator;
-            inputFieldMap.put(KeyStroke.getKeyStroke(entryKey, 0), actionName);
-            mainInputMap.put(KeyStroke.getKeyStroke(entryKey, 0), actionName);
-            actionMap.put(actionName, calEvent.createActionNumber(operator));
+            AbstractAction action = calEvent.eventsBindingButtonsKeyboard(operator);
+            focusingPanel(entryKey, actionName, action);
         }
+        focusingPanel(KeyEvent.VK_ENTER, "result", (AbstractAction) calEvent.getResultCalc());
+
     }
 
+    private void focusingPanel(Integer entryKey, String actionName, AbstractAction action) {
+        InputMap inputFieldMap = inputField.getInputMap(JComponent.WHEN_FOCUSED);
+        InputMap mainInputMap = mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = mainPanel.getActionMap();
+        inputFieldMap.put(KeyStroke.getKeyStroke(entryKey, 0), actionName);
+        mainInputMap.put(KeyStroke.getKeyStroke(entryKey, 0), actionName);
+        actionMap.put(actionName, action);
+    }
 
     @Override
     public String getInputText() {
@@ -158,6 +151,7 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
     public void setMemory(String text) {
         memoryCalc.append(text);
     }
+
     @Override
     public void cleanMemory() {
         memoryCalc = new StringBuilder();
