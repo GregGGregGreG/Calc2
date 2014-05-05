@@ -85,7 +85,6 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
         expressionBox.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         inputField.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         setToScreenCenter(this);
-        inputField.addKeyListener(calEvent.keyBlock());
         calcViewFormButtons();
         bindingButtonsKeyboard();
     }
@@ -104,7 +103,7 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
     }
 
     private void bindingButtonsKeyboard() {
-
+        inputField.addKeyListener(calEvent.keyBlock());
         for (Map.Entry<Integer, Character> entry : bindButtons.entrySet()) {
             Integer entryKey = entry.getKey();
             Character operator = entry.getValue();

@@ -17,7 +17,7 @@ import java.awt.event.KeyEvent;
 public class CalculatorEventImpl implements CalculatorEvent {
     private boolean addOperator = false;
     private boolean addPoint = true;
-    private boolean negativeNumber = true;
+    private boolean negativNumber = true;
     private int openBracket = 0;
     private int closeBracket = 0;
 
@@ -139,13 +139,13 @@ public class CalculatorEventImpl implements CalculatorEvent {
             calcView.setInputText(calcView.getInputText() + " " + text + " ");
             addOperator = false;
             addPoint = true;
-        } else if (text.equals("-") && negativeNumber) {
+        } else if (text.equals("-") && negativNumber) {
             if (calcView.getInputText().equals("0")) {
                 calcView.setInputText(text);
             } else {
                 calcView.setInputText(calcView.getInputText() + text);
             }
-            negativeNumber = false;
+            negativNumber = false;
         }
     }
 
@@ -154,7 +154,7 @@ public class CalculatorEventImpl implements CalculatorEvent {
         else calcView.setInputText(calcView.getInputText() + text);
         addOperator = true;
         addPoint = true;
-        negativeNumber = true;
+        negativNumber = true;
     }
 
     private final void result() {
@@ -197,7 +197,8 @@ public class CalculatorEventImpl implements CalculatorEvent {
         calView.setExpressionText(calView.getMemory());
         calView.setInputText("0");
         addOperator = false;
-        negativeNumber = true;
+        negativNumber = true;
+        openBracket = 0;
 
     }
 
@@ -206,6 +207,6 @@ public class CalculatorEventImpl implements CalculatorEvent {
         if (calcView.getInputText().length() == 0) return;
         calcView.setInputText(calcView.getInputText().substring(0, calcView.getInputText().length() - 1));
         addOperator = true;
-        negativeNumber = true;
+        negativNumber = true;
     }
 }

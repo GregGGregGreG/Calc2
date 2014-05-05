@@ -15,13 +15,11 @@ public class InfixReversePolish {
     private static Deque<Character> operators = new LinkedList<Character>();
     private static Deque<Character> expressions = new ArrayDeque<Character>();
 
-
     public static Double parser(String expression) throws ExceptionPolishEvaluator,ExceptionInfixReversPolish {
-        String safeExpression = expression.trim().replaceAll(" ", "").replaceAll(",", ".")
+        String safeExpression = expression.trim().replaceAll(" ", "").replaceAll(",", ".").replaceAll("×", "\\*").replaceAll("÷", "\\/")
                 .replaceAll("--", "+").replaceAll("\\+\\-", "-").replaceAll("\\(\\-", "(0-")
                 .replaceAll("/0 ", "&").replaceAll("^-", "0-")
-                .replaceAll("/-", "/(0-").replaceAll("\\*-", "*(0-").replaceAll("×", "\\*")
-                .replaceAll("÷", "\\/").replaceAll("÷-","÷(0-").replaceAll("×-","×(0-");;
+                .replaceAll("/-", "/(0-").replaceAll("\\*\\-", "\\*(\\0-");
         char[] chars = safeExpression.toCharArray();
         for (char token : chars) {
             expressions.addLast(token);
