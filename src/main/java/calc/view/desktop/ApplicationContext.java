@@ -3,9 +3,6 @@ package calc.view.desktop;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by GREG on 28.04.2014.
- */
 public class ApplicationContext {
     protected final Map<String, Object> context = new HashMap<>();
 

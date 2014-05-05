@@ -1,4 +1,4 @@
-package calc.view.desktop;
+package calc.view.desktop.view;
 
 public interface CalculatorView {
     String getInputText();
@@ -13,5 +13,4 @@ public interface CalculatorView {
 
     void setMemory(String text);
 
-    void cleanMemory();
 }

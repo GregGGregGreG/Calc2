@@ -21,7 +21,7 @@ public class InfixReversePolish {
                 .replaceAll("--", "+").replaceAll("\\+\\-", "-").replaceAll("\\(\\-", "(0-")
                 .replaceAll("/0 ", "&").replaceAll("^-", "0-")
                 .replaceAll("/-", "/(0-").replaceAll("\\*-", "*(0-").replaceAll("×", "\\*")
-                .replaceAll("÷", "\\/");
+                .replaceAll("÷", "\\/").replaceAll("÷-","÷(0-").replaceAll("×-","×(0-");;
         char[] chars = safeExpression.toCharArray();
         for (char token : chars) {
             expressions.addLast(token);
@@ -41,7 +41,7 @@ public class InfixReversePolish {
             } else if (isOpenBracket(token)) {
                 operators.add(token);
             } else {
-                clearAllValues();
+                clearAllValuesInStack();
                 throw new ExceptionInfixReversPolish("Token is not supported = " + token);
             }
         }
@@ -49,7 +49,7 @@ public class InfixReversePolish {
         cleanStackOperator();
         String result = evaluation.toString();
         System.out.println(evaluation);
-        clearAllValues();
+        clearAllValuesInStack();
         return evaluator(result);
     }
 
@@ -71,7 +71,7 @@ public class InfixReversePolish {
         }
     }
 
-    private static void clearAllValues() {
+    private static void clearAllValuesInStack() {
         operators.clear();
         evaluation = new StringBuilder();
         expressions.clear();

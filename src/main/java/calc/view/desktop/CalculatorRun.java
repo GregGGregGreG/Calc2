@@ -1,5 +1,8 @@
 package calc.view.desktop;
 
+import calc.view.desktop.event.CalculatorEventImpl;
+import calc.view.desktop.view.CalculatorViewForm;
+
 import javax.swing.*;
 
 public class CalculatorRun implements Runnable {

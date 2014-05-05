@@ -1,9 +1,11 @@
-package calc.view.desktop;
+package calc.view.desktop.event;
 
 import calc.exceptions.ExceptionInfixReversPolish;
 import calc.exceptions.ExceptionPolishEvaluator;
 import calc.logic.CalculationUtil;
 import calc.logic.InfixReversePolish;
+import calc.view.desktop.ApplicationContext;
+import calc.view.desktop.view.CalculatorView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -15,34 +17,44 @@ import java.awt.event.KeyEvent;
 public class CalculatorEventImpl implements CalculatorEvent {
     private boolean addOperator = false;
     private boolean addPoint = true;
+    private boolean negativeNumber = true;
+    private int openBracket = 0;
+    private int closeBracket = 0;
 
-    public KeyAdapter keyBlock() {
+
+    @Override
+    public final KeyAdapter keyBlock() {
         return new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
                 Character key = e.getKeyChar();
                 if (!(key == '.'))
-
                     e.consume();
-                addPoint = false;
-            }
-
-        };
-    }
-
-    public ActionListener resetCalc() {
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CalculatorView calView = (CalculatorView) ApplicationContext.getBean("calculatorView");
-                calView.setExpressionText(calView.getMemory());
-                calView.setInputText("0");
-                addOperator = false;
             }
         };
     }
 
     @Override
-    public AbstractAction getResultCalc() {
+    public final AbstractAction backspaceInputField() {
+        return new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                backspace();
+            }
+        };
+    }
+
+    @Override
+    public final ActionListener resetCalc() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                reset();
+            }
+        };
+    }
+
+    @Override
+    public final AbstractAction getResultCalc() {
         return new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -51,20 +63,18 @@ public class CalculatorEventImpl implements CalculatorEvent {
         };
     }
 
-    //    public final ActionListener getAnsResultCalc = new ActionListener() {
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//            CalculatorView calView = (CalculatorView) ApplicationContext.getBean("calculatorView");
-//            if (calView.getInputText().equals("0") && !(memoryCalc.length() == 1)) {
-//                StringBuilder numberMemory = memoryCalc;
-//                inputField.setText(String.valueOf(numberMemory.delete(0, 5)));
-//
-//            } else inputField.setText(inputField.getText() + memoryCalc.delete(0, 5));
-//        }
-//    };
+    @Override
+    public final ActionListener getAnsResultCalc() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ansResultCalc();
+            }
+        };
+    }
 
     @Override
-    public ActionListener eventsCalcViewFormButtons() {
+    public final ActionListener eventsCalcViewFormButtons() {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -77,7 +87,7 @@ public class CalculatorEventImpl implements CalculatorEvent {
     }
 
     @Override
-    public AbstractAction eventsBindingButtonsKeyboard(final Character operator) {
+    public final AbstractAction eventsBindingButtonsKeyboard(final Character operator) {
         return new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -86,7 +96,7 @@ public class CalculatorEventImpl implements CalculatorEvent {
         };
     }
 
-    private void actionNumberAndOperator(Character operator) {
+    private final void actionNumberAndOperator(Character operator) {
         CalculatorView calView = (CalculatorView) ApplicationContext.getBean("calculatorView");
         String text = String.valueOf(operator);
         String inputText = calView.getInputText();
@@ -103,43 +113,54 @@ public class CalculatorEventImpl implements CalculatorEvent {
         }
     }
 
-    private void point(CalculatorView calcView, String text) {
+    private final void point(CalculatorView calcView, String text) {
         if (addPoint) {
             calcView.setInputText(calcView.getInputText() + text);
             addPoint = false;
         }
     }
 
-    private void openBracket(CalculatorView calcView, String text) {
-        calcView.setInputText(calcView.getInputText() + " " + text);
+    private final void openBracket(CalculatorView calcView, String text) {
+        if (calcView.getInputText().equals("0")) calcView.setInputText(text);
+        else if (addOperator == false) calcView.setInputText(calcView.getInputText() + " " + text);
+        openBracket++;
     }
 
-    private void closeBracket(CalculatorView calcView, String text) {
-        calcView.setInputText(calcView.getInputText() + text + " ");
+    private final void closeBracket(CalculatorView calcView, String text) {
+        if (calcView.getInputText().equals("0")) return;
+        else if (!(closeBracket == openBracket)) {
+            calcView.setInputText(calcView.getInputText() + text + " ");
+            openBracket--;
+        }
     }
 
-    private void operator(CalculatorView calcView, String text) {
+    private final void operator(CalculatorView calcView, String text) {
         if (addOperator) {
             calcView.setInputText(calcView.getInputText() + " " + text + " ");
             addOperator = false;
             addPoint = true;
+        } else if (text.equals("-") && negativeNumber) {
+            if (calcView.getInputText().equals("0")) {
+                calcView.setInputText(text);
+            } else {
+                calcView.setInputText(calcView.getInputText() + text);
+            }
+            negativeNumber = false;
         }
     }
 
-    private void digit(CalculatorView calcView, String text, String inputText) {
+    private final void digit(CalculatorView calcView, String text, String inputText) {
         if (inputText.equals("0")) calcView.setInputText(text);
         else calcView.setInputText(calcView.getInputText() + text);
         addOperator = true;
         addPoint = true;
+        negativeNumber = true;
     }
 
-    private void result() {
-
+    private final void result() {
         CalculatorView calcView = (CalculatorView) ApplicationContext.getBean("calculatorView");
-        if (calcView.getInputText().length() == 1) {
-            return;
-        }
-        if (calcView.getInputText().equals(calcView.getMemory())) {
+        if (calcView.getInputText().length() == 1) return;
+        if (!(calcView.getMemory().length() == 0) && calcView.getInputText().equals(calcView.getMemory().substring(6))) {
             return;
         }
         calcView.setExpressionText(calcView.getInputText() + " = ");
@@ -147,21 +168,44 @@ public class CalculatorEventImpl implements CalculatorEvent {
             double resultExpression = InfixReversePolish.parser(calcView.getInputText());
             int convertNumber = (int) (resultExpression);
             if (convertNumber == resultExpression) {
-                calcView.cleanMemory();
                 calcView.setInputText(String.valueOf(convertNumber));
                 calcView.setMemory("Ans = " + String.valueOf(convertNumber));
                 System.out.println(calcView.getMemory());
             } else {
-                calcView.cleanMemory();
                 calcView.setInputText(String.valueOf(resultExpression));
                 calcView.setMemory("Ans = " + String.valueOf(resultExpression));
             }
         } catch (ExceptionInfixReversPolish e1) {
             calcView.setExpressionText("Symbol is not supported");
-            e1.printStackTrace();
         } catch (ExceptionPolishEvaluator e1) {
             calcView.setExpressionText("Invalid expression");
-            e1.printStackTrace();
+        } finally {
+            addOperator = true;
         }
+    }
+
+    private final void ansResultCalc() {
+        CalculatorView calView = (CalculatorView) ApplicationContext.getBean("calculatorView");
+        if (!(calView.getMemory().length() == 0) && addOperator == false) {
+            calView.setInputText(calView.getInputText() + calView.getMemory().substring(6));
+            addOperator = true;
+        }
+    }
+
+    private final void reset() {
+        CalculatorView calView = (CalculatorView) ApplicationContext.getBean("calculatorView");
+        calView.setExpressionText(calView.getMemory());
+        calView.setInputText("0");
+        addOperator = false;
+        negativeNumber = true;
+
+    }
+
+    private final void backspace() {
+        CalculatorView calcView = (CalculatorView) ApplicationContext.getBean("calculatorView");
+        if (calcView.getInputText().length() == 0) return;
+        calcView.setInputText(calcView.getInputText().substring(0, calcView.getInputText().length() - 1));
+        addOperator = true;
+        negativeNumber = true;
     }
 }

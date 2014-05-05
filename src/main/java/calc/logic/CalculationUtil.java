@@ -13,7 +13,6 @@ public class CalculationUtil {
         else return left / right;
     }
 
-
     public static boolean isOperators(char token) {
         return isPriority(token) || isNotPriority(token);
     }

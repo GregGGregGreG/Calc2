@@ -27,8 +27,7 @@ public class PolishEvaluator {
                 currentNumber = new StringBuilder();
             }
         }
-        return expStack.pollLast();
+        if (expStack.size() == 1) return expStack.pollLast();
+        else throw new ExceptionPolishEvaluator("Invalid expression");
     }
 }
-
-

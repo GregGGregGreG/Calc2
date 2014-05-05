@@ -1,7 +1,11 @@
-package calc.view.desktop;
+package calc.view.desktop.view;
+
+import calc.view.desktop.ApplicationContext;
+import calc.view.desktop.event.CalculatorEvent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -9,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static calc.view.desktop.CalculatorUtil.setToScreenCenter;
+import static calc.view.desktop.view.CalculatorUtil.setToScreenCenter;
 
 
 public class CalculatorViewForm extends JFrame implements CalculatorView, Serializable {
@@ -96,7 +100,7 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
 
         resetButton.addActionListener(calEvent.resetCalc());
         getResult.addActionListener(calEvent.getResultCalc());
-        //   getPreviousResult.addActionListener(getAnsResultCalc);
+        getPreviousResult.addActionListener(calEvent.getAnsResultCalc());
     }
 
     private void bindingButtonsKeyboard() {
@@ -106,18 +110,20 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
             Character operator = entry.getValue();
             String actionName = "action" + operator;
             AbstractAction action = calEvent.eventsBindingButtonsKeyboard(operator);
-            focusingPanel(entryKey, actionName, action);
+            focusingPanel(entryKey, 0, actionName, action);
         }
-        focusingPanel(KeyEvent.VK_ENTER, "result", (AbstractAction) calEvent.getResultCalc());
-
+        focusingPanel(KeyEvent.VK_ENTER, 0, "result", (AbstractAction) calEvent.getResultCalc());
+        focusingPanel(KeyEvent.VK_BACK_SPACE, 0, "backspace", (AbstractAction) calEvent.backspaceInputField());
+        focusingPanel(KeyEvent.VK_9, InputEvent.SHIFT_MASK, "openBracket", calEvent.eventsBindingButtonsKeyboard('('));
+        focusingPanel(KeyEvent.VK_0, InputEvent.SHIFT_MASK, "closeBracket", calEvent.eventsBindingButtonsKeyboard(')'));
     }
 
-    private void focusingPanel(Integer entryKey, String actionName, AbstractAction action) {
+    private void focusingPanel(Integer entryKey, Integer componentEvent, String actionName, AbstractAction action) {
         InputMap inputFieldMap = inputField.getInputMap(JComponent.WHEN_FOCUSED);
         InputMap mainInputMap = mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = mainPanel.getActionMap();
-        inputFieldMap.put(KeyStroke.getKeyStroke(entryKey, 0), actionName);
-        mainInputMap.put(KeyStroke.getKeyStroke(entryKey, 0), actionName);
+        inputFieldMap.put(KeyStroke.getKeyStroke(entryKey, componentEvent), actionName);
+        mainInputMap.put(KeyStroke.getKeyStroke(entryKey, componentEvent), actionName);
         actionMap.put(actionName, action);
     }
 
@@ -149,11 +155,8 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
 
     @Override
     public void setMemory(String text) {
+        memoryCalc = new StringBuilder();
         memoryCalc.append(text);
     }
 
-    @Override
-    public void cleanMemory() {
-        memoryCalc = new StringBuilder();
-    }
 }
