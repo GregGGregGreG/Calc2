@@ -1,7 +1,7 @@
 package calc.view.desktop.event;
 
-import calc.exceptions.ExceptionInfixReversPolish;
-import calc.exceptions.ExceptionPolishEvaluator;
+import calc.exceptions.InfixReversPolishException;
+import calc.exceptions.PolishEvaluatorException;
 import calc.logic.CalculationUtil;
 import calc.logic.InfixReversePolish;
 import calc.view.desktop.ApplicationContext;
@@ -96,103 +96,105 @@ public class CalculatorEventImpl implements CalculatorEvent {
         };
     }
 
-    private final void actionNumberAndOperator(Character operator) {
+    private void actionNumberAndOperator(Character operator) {
         CalculatorView calView = (CalculatorView) ApplicationContext.getBean("calculatorView");
         String text = String.valueOf(operator);
         String inputText = calView.getInputText();
-        if (calView.getExpressionText().equals(calView.getMemory()) || calView.getExpressionText().length() == 0) {
+        String expressionBox = calView.getExpressionText();
+        String memory = calView.getMemory();
+        if (expressionBox.equals(memory) || expressionBox.length() == 0) {
             if (Character.isDigit(operator)) digit(calView, text, inputText);
-            else if (CalculationUtil.isOperators(operator)) operator(calView, text);
-            else if (CalculationUtil.isOpenBracket(operator)) openBracket(calView, text);
-            else if (CalculationUtil.isCloseBracket(operator)) closeBracket(calView, text);
-            else if (operator == '.') point(calView, text);
+            else if (CalculationUtil.isOperators(operator)) operator(calView, text, inputText);
+            else if (CalculationUtil.isOpenBracket(operator)) openBracket(calView, text, inputText);
+            else if (CalculationUtil.isCloseBracket(operator)) closeBracket(calView, text, inputText);
+            else if (operator == '.') point(calView, text, inputText);
         } else {
-            calView.setExpressionText(calView.getMemory());
-            if (CalculationUtil.isOperators(operator)) operator(calView, text);
+            calView.setExpressionText(memory);
+            if (CalculationUtil.isOperators(operator)) operator(calView, text, inputText);
             else calView.setInputText(text);
         }
     }
 
-    private final void point(CalculatorView calcView, String text) {
+    private void point(CalculatorView calcView, String text, String inputText) {
         if (addPoint) {
-            calcView.setInputText(calcView.getInputText() + text);
+            calcView.setInputText(inputText + text);
             addPoint = false;
         }
     }
 
-    private final void openBracket(CalculatorView calcView, String text) {
-        if (calcView.getInputText().equals("0")) calcView.setInputText(text);
-        else if (addOperator == false) calcView.setInputText(calcView.getInputText() + " " + text);
+    private void openBracket(CalculatorView calcView, String text, String inputText) {
         openBracket++;
+        if (inputText.equals("0")) calcView.setInputText(text);
+        else if (addOperator) calcView.setInputText(inputText + " " + text);
     }
 
-    private final void closeBracket(CalculatorView calcView, String text) {
-        if (calcView.getInputText().equals("0")) return;
+    private void closeBracket(CalculatorView calcView, String text, String inputText) {
+        if (inputText.equals("0")) return;
         else if (!(closeBracket == openBracket)) {
-            calcView.setInputText(calcView.getInputText() + text + " ");
+            calcView.setInputText(inputText + text + " ");
             openBracket--;
         }
     }
 
-    private final void operator(CalculatorView calcView, String text) {
+    private void operator(CalculatorView calcView, String text, String inputText) {
         if (addOperator) {
-            calcView.setInputText(calcView.getInputText() + " " + text + " ");
+            calcView.setInputText(inputText + " " + text + " ");
             addOperator = false;
             addPoint = true;
         } else if (text.equals("-") && negativNumber) {
-            if (calcView.getInputText().equals("0")) {
+            if (inputText.equals("0")) {
                 calcView.setInputText(text);
             } else {
-                calcView.setInputText(calcView.getInputText() + text);
+                calcView.setInputText(inputText + text);
             }
             negativNumber = false;
         }
     }
 
-    private final void digit(CalculatorView calcView, String text, String inputText) {
+    private void digit(CalculatorView calcView, String text, String inputText) {
         if (inputText.equals("0")) calcView.setInputText(text);
-        else calcView.setInputText(calcView.getInputText() + text);
+        else calcView.setInputText(inputText + text);
         addOperator = true;
         addPoint = true;
         negativNumber = true;
     }
 
-    private final void result() {
+    private void result() {
         CalculatorView calcView = (CalculatorView) ApplicationContext.getBean("calculatorView");
-        if (calcView.getInputText().length() == 1) return;
-        if (!(calcView.getMemory().length() == 0) && calcView.getInputText().equals(calcView.getMemory().substring(6))) {
-            return;
-        }
-        calcView.setExpressionText(calcView.getInputText() + " = ");
+        String inputText = calcView.getInputText();
+        String memory = calcView.getMemory();
+        if (inputText.length() == 1) return;
+        if (!(memory.length() == 0) && inputText.equals(memory.substring(6))) return;
+        calcView.setExpressionText(inputText + " = ");
         try {
-            double resultExpression = InfixReversePolish.parser(calcView.getInputText());
-            int convertNumber = (int) (resultExpression);
-            if (convertNumber == resultExpression) {
-                calcView.setInputText(String.valueOf(convertNumber));
-                calcView.setMemory("Ans = " + String.valueOf(convertNumber));
-                System.out.println(calcView.getMemory());
+            double doubleResult = InfixReversePolish.parser(inputText);
+            int intResult = (int) (doubleResult);
+            if (intResult == doubleResult) {
+                calcView.setInputText(String.valueOf(intResult));
+                calcView.setMemory("Ans = " + String.valueOf(intResult));
+                System.out.println(memory);
             } else {
-                calcView.setInputText(String.valueOf(resultExpression));
-                calcView.setMemory("Ans = " + String.valueOf(resultExpression));
+                calcView.setInputText(String.valueOf(doubleResult));
+                calcView.setMemory("Ans = " + String.valueOf(doubleResult));
             }
-        } catch (ExceptionInfixReversPolish e1) {
+        } catch (InfixReversPolishException e1) {
             calcView.setExpressionText("Symbol is not supported");
-        } catch (ExceptionPolishEvaluator e1) {
+        } catch (PolishEvaluatorException e1) {
             calcView.setExpressionText("Invalid expression");
         } finally {
             addOperator = true;
         }
     }
 
-    private final void ansResultCalc() {
+    private void ansResultCalc() {
         CalculatorView calView = (CalculatorView) ApplicationContext.getBean("calculatorView");
-        if (!(calView.getMemory().length() == 0) && addOperator == false) {
+        if (!(calView.getMemory().length() == 0) && addOperator) {
             calView.setInputText(calView.getInputText() + calView.getMemory().substring(6));
             addOperator = true;
         }
     }
 
-    private final void reset() {
+    private void reset() {
         CalculatorView calView = (CalculatorView) ApplicationContext.getBean("calculatorView");
         calView.setExpressionText(calView.getMemory());
         calView.setInputText("0");
@@ -202,11 +204,13 @@ public class CalculatorEventImpl implements CalculatorEvent {
 
     }
 
-    private final void backspace() {
+    private  void backspace() {
         CalculatorView calcView = (CalculatorView) ApplicationContext.getBean("calculatorView");
-        if (calcView.getInputText().length() == 0) return;
-        calcView.setInputText(calcView.getInputText().substring(0, calcView.getInputText().length() - 1));
+        String inputText = calcView.getInputText();
+        if (inputText.length() == 0) return;
+        calcView.setInputText(inputText.substring(0, inputText.length() - 1));
         addOperator = true;
         negativNumber = true;
+        openBracket++;
     }
 }

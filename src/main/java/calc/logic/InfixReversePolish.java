@@ -1,7 +1,7 @@
 package calc.logic;
 
-import calc.exceptions.ExceptionInfixReversPolish;
-import calc.exceptions.ExceptionPolishEvaluator;
+import calc.exceptions.InfixReversPolishException;
+import calc.exceptions.PolishEvaluatorException;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -15,7 +15,7 @@ public class InfixReversePolish {
     private static Deque<Character> operators = new LinkedList<Character>();
     private static Deque<Character> expressions = new ArrayDeque<Character>();
 
-    public static Double parser(String expression) throws ExceptionPolishEvaluator,ExceptionInfixReversPolish {
+    public static Double parser(String expression) throws PolishEvaluatorException,InfixReversPolishException {
         String safeExpression = expression.trim().replaceAll(" ", "").replaceAll(",", ".").replaceAll("×", "\\*").replaceAll("÷", "\\/")
                 .replaceAll("--", "+").replaceAll("\\+\\-", "-").replaceAll("\\(\\-", "(0-")
                 .replaceAll("/0 ", "&").replaceAll("^-", "0-")
@@ -40,7 +40,7 @@ public class InfixReversePolish {
                 operators.add(token);
             } else {
                 clearAllValuesInStack();
-                throw new ExceptionInfixReversPolish("Token is not supported = " + token);
+                throw new InfixReversPolishException("Token is not supported = " + token);
             }
         }
         cleanStackBracket();

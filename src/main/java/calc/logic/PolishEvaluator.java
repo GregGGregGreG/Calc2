@@ -1,6 +1,6 @@
 package calc.logic;
 
-import calc.exceptions.ExceptionPolishEvaluator;
+import calc.exceptions.PolishEvaluatorException;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -9,7 +9,7 @@ import static calc.logic.CalculationUtil.calculation;
 import static calc.logic.CalculationUtil.isOperators;
 
 public class PolishEvaluator {
-    public static Double evaluator(String expression) throws ExceptionPolishEvaluator {
+    public static Double evaluator(String expression) throws PolishEvaluatorException {
         Deque<Double> expStack = new ArrayDeque<Double>();
         StringBuilder currentNumber = new StringBuilder();
         char[] chars = expression.toCharArray();
@@ -18,7 +18,7 @@ public class PolishEvaluator {
                 if (expStack.size() > 1)
                     expStack.addLast(calculation(token, expStack.pollLast(), expStack.pollLast()));
                 else {
-                    throw new ExceptionPolishEvaluator("Invalid expression");
+                    throw new PolishEvaluatorException("Invalid expression");
                 }
             } else if (Character.isDigit(token) || token == '.') {
                 currentNumber.append(token);
@@ -28,6 +28,6 @@ public class PolishEvaluator {
             }
         }
         if (expStack.size() == 1) return expStack.pollLast();
-        else throw new ExceptionPolishEvaluator("Invalid expression");
+        else throw new PolishEvaluatorException("Invalid expression");
     }
 }
