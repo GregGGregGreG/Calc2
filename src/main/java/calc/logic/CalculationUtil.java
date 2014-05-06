@@ -10,6 +10,7 @@ public class CalculationUtil {
         if (isPlus(token)) return left + right;
         if (isMinus(token)) return left - right;
         if (isMultiply(token)) return left * right;
+        if (isPow(token)) return Math.pow(left, right);
         else return left / right;
     }
 
@@ -17,12 +18,16 @@ public class CalculationUtil {
         return isPriority(token) || isNotPriority(token);
     }
 
-    public static boolean isPriority(char token) {
-        return isDivision(token) || isMultiply(token);
-    }
-
     public static boolean isNotPriority(char token) {
         return isPlus(token) || isMinus(token);
+    }
+
+    public static boolean isPriority(char token) {
+        return isDivision(token) || isMultiply(token) || isBinaryOperation(token);
+    }
+
+    public static boolean isBinaryOperation(char token) {
+        return isPow(token);
     }
 
     public static boolean isPlus(char token) {
@@ -47,5 +52,9 @@ public class CalculationUtil {
 
     public static boolean isCloseBracket(char token) {
         return token == ')';
+    }
+
+    public static boolean isPow(char token) {
+        return token == '^';
     }
 }
