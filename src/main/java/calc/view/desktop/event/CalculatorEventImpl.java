@@ -167,16 +167,9 @@ public class CalculatorEventImpl implements CalculatorEvent {
         if (!(memory.length() == 0) && inputText.equals(memory.substring(6))) return;
         calcView.setExpressionText(inputText + " = ");
         try {
-            double doubleResult = InfixReversePolish.parser(inputText);
-            int intResult = (int) (doubleResult);
-            if (intResult == doubleResult) {
-                calcView.setInputText(String.valueOf(intResult));
-                calcView.setMemory("Ans = " + String.valueOf(intResult));
-                System.out.println(memory);
-            } else {
-                calcView.setInputText(String.valueOf(doubleResult));
-                calcView.setMemory("Ans = " + String.valueOf(doubleResult));
-            }
+            String result = InfixReversePolish.parser(inputText);
+            calcView.setInputText(result);
+            calcView.setMemory("Ans = " + result);
         } catch (InfixReversPolishException e1) {
             calcView.setExpressionText("Symbol is not supported");
         } catch (PolishEvaluatorException e1) {
@@ -188,7 +181,7 @@ public class CalculatorEventImpl implements CalculatorEvent {
 
     private void ansResultCalc() {
         CalculatorView calView = (CalculatorView) ApplicationContext.getBean("calculatorView");
-        if (!(calView.getMemory().length() == 0) && addOperator) {
+        if (!(calView.getMemory().length() == 0) && addOperator==false) {
             calView.setInputText(calView.getInputText() + calView.getMemory().substring(6));
             addOperator = true;
         }
@@ -201,10 +194,9 @@ public class CalculatorEventImpl implements CalculatorEvent {
         addOperator = false;
         negativNumber = true;
         openBracket = 0;
-
     }
 
-    private  void backspace() {
+    private void backspace() {
         CalculatorView calcView = (CalculatorView) ApplicationContext.getBean("calculatorView");
         String inputText = calcView.getInputText();
         if (inputText.length() == 0) return;

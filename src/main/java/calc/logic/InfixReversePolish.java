@@ -15,7 +15,7 @@ public class InfixReversePolish {
     private static Deque<Character> operators = new LinkedList<Character>();
     private static Deque<Character> expressions = new ArrayDeque<Character>();
 
-    public static Double parser(String expression) throws PolishEvaluatorException,InfixReversPolishException {
+    public static String parser(String expression) throws PolishEvaluatorException,InfixReversPolishException {
         String safeExpression = expression.trim().replaceAll(" ", "").replaceAll(",", ".").replaceAll("×", "\\*").replaceAll("÷", "\\/")
                 .replaceAll("--", "+").replaceAll("\\+\\-", "-").replaceAll("\\(\\-", "(0-")
                 .replaceAll("/0 ", "&").replaceAll("^-", "0-")
@@ -48,7 +48,9 @@ public class InfixReversePolish {
         String result = evaluation.toString();
         System.out.println(evaluation);
         clearAllValuesInStack();
-        return evaluator(result);
+        Double calculationExpression = evaluator(result);
+        return validTypeResult(calculationExpression);
+
     }
 
     private static void cleanStackBracket() {

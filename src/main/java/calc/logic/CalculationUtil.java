@@ -5,6 +5,12 @@ public class CalculationUtil {
     private CalculationUtil() {
     }
 
+    public static String validTypeResult(double doubleResult) {
+        int intResult = (int) doubleResult;
+        if (intResult == doubleResult) return String.valueOf(intResult);
+        else return String.valueOf(doubleResult);
+    }
+
     public static Double calculation(Character token, Double right, Double left) {
 
         if (isPlus(token)) return left + right;
@@ -29,6 +35,7 @@ public class CalculationUtil {
     public static boolean isBinaryOperation(char token) {
         return isPow(token);
     }
+
 
     public static boolean isPlus(char token) {
         return token == '+';
