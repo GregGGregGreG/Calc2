@@ -10,6 +10,7 @@ public class CalculatorRunConsole {
     public static void main(String[] args) throws PolishEvaluatorException, InfixReversPolishException {
         for (int x = 0; x < 1; x--)
             getExpr();
+
     }
 
     private static void getExpr() throws PolishEvaluatorException, InfixReversPolishException {
@@ -18,6 +19,5 @@ public class CalculatorRunConsole {
         Scanner in = new Scanner(System.in);
         inputExpression = in.nextLine();
         System.out.println("Result : " + InfixReversePolish.parser(inputExpression));
-
     }
 }

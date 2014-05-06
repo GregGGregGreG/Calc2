@@ -19,6 +19,10 @@ public class CalculationUtil {
         else return left / right;
     }
 
+    public static Double calculationBinaryOpration(Character token, Double digit) {
+        return Math.sqrt(digit);
+    }
+
     public static boolean isOperators(char token) {
         return isPriority(token) || isNotPriority(token);
     }
@@ -28,11 +32,11 @@ public class CalculationUtil {
     }
 
     public static boolean isPriority(char token) {
-        return isDivision(token) || isMultiply(token) || isBinaryOperation(token);
+        return isDivision(token) || isMultiply(token) || isBinaryOperation(token) || isPow(token);
     }
 
     public static boolean isBinaryOperation(char token) {
-        return isPow(token);
+        return isSqrt(token);
     }
 
 
@@ -62,5 +66,9 @@ public class CalculationUtil {
 
     public static boolean isPow(char token) {
         return token == '^';
+    }
+
+    public static boolean isSqrt(char token) {
+        return token == '√';
     }
 }

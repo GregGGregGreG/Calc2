@@ -78,12 +78,8 @@ public class CalculatorEventImpl implements CalculatorEvent {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                final JButton source = (JButton) e.getSource();
-                String operator = source.getActionCommand();
-                Character chars = operator.charAt(0);
-                System.out.println(operator);
-                actionNumberAndOperator(chars);
-
+                Character operator = e.getActionCommand().charAt(0);
+                actionNumberAndOperator(operator);
             }
         };
     }
@@ -136,7 +132,7 @@ public class CalculatorEventImpl implements CalculatorEvent {
 
     private void closeBracket(CalculatorView calcView, String text, String inputText) {
         if (inputText.equals("0")) return;
-        else if (!(closeBracket == openBracket)&& addOperator==true) {
+        else if (!(closeBracket == openBracket) && addOperator == true) {
             calcView.setInputText(inputText + text + " ");
             openBracket--;
         }
@@ -154,6 +150,12 @@ public class CalculatorEventImpl implements CalculatorEvent {
                 calcView.setInputText(inputText + text);
             }
             negativNumber = false;
+        } else if (text.equals("√")) {
+            if (inputText.equals("0")) {
+                calcView.setInputText(text);
+            } else {
+                calcView.setInputText(inputText + text);
+            }
         }
     }
 
@@ -180,8 +182,6 @@ public class CalculatorEventImpl implements CalculatorEvent {
             calcView.setExpressionText("Symbol is not supported");
         } catch (PolishEvaluatorException e1) {
             calcView.setExpressionText("Invalid expression");
-        } finally {
-            addOperator = true;
         }
     }
 
@@ -190,6 +190,8 @@ public class CalculatorEventImpl implements CalculatorEvent {
         if (!(calView.getMemory().length() == 0) && addOperator == false) {
             calView.setInputText(calView.getInputText() + calView.getMemory().substring(6));
             addOperator = true;
+            addPoint = true;
+            negativNumber = true;
         }
     }
 

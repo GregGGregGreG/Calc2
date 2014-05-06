@@ -15,7 +15,7 @@ public class InfixReversePolish {
     private static Deque<Character> operators = new LinkedList<Character>();
     private static Deque<Character> expressions = new ArrayDeque<Character>();
 
-    public static String parser(String expression) throws PolishEvaluatorException,InfixReversPolishException {
+    public static String parser(String expression) throws PolishEvaluatorException, InfixReversPolishException {
         String safeExpression = expression.trim().replaceAll(" ", "").replaceAll(",", ".").replaceAll("×", "\\*").replaceAll("÷", "\\/")
                 .replaceAll("--", "+").replaceAll("\\+\\-", "-").replaceAll("\\(\\-", "(0-")
                 .replaceAll("/0 ", "&").replaceAll("^-", "0-")
@@ -26,7 +26,7 @@ public class InfixReversePolish {
         }
         while (!expressions.isEmpty()) {
             char token = expressions.pollFirst();
-            if (Character.isDigit(token) || token == '.') {
+            if (Character.isDigit(token) || token == '.' || token == 'E') {
                 evaluation.append(token);
             } else if (isNotPriority(token)) {
                 cleanStackOperator();

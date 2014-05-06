@@ -5,8 +5,7 @@ import calc.exceptions.PolishEvaluatorException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import static calc.logic.CalculationUtil.calculation;
-import static calc.logic.CalculationUtil.isOperators;
+import static calc.logic.CalculationUtil.*;
 
 public class PolishEvaluator {
     public static Double evaluator(String expression) throws PolishEvaluatorException {
@@ -15,12 +14,16 @@ public class PolishEvaluator {
         char[] chars = expression.toCharArray();
         for (char token : chars) {
             if (isOperators(token)) {
-                if (expStack.size() > 1)
-                    expStack.addLast(calculation(token, expStack.pollLast(), expStack.pollLast()));
+                if (expStack.size() > 1 || (expStack.size() == 1 && isBinaryOperation(token)))
+                    if (isBinaryOperation(token)) {
+                        expStack.addLast(calculationBinaryOpration(token, expStack.pollLast()));
+                    } else {
+                        expStack.addLast(calculation(token, expStack.pollLast(), expStack.pollLast()));
+                    }
                 else {
                     throw new PolishEvaluatorException("Invalid expression");
                 }
-            } else if (Character.isDigit(token) || token == '.') {
+            } else if (Character.isDigit(token) || token == '.' || token == 'E') {
                 currentNumber.append(token);
             } else if (token == ' ' && !(currentNumber.length() == 0)) {
                 expStack.addLast(Double.parseDouble(String.valueOf(currentNumber)));

@@ -77,6 +77,7 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
     private JButton getPreviousResult;
     private JButton resetButton;
     private JButton exponentiation;
+    private JButton sqrt;
 
     public CalculatorViewForm() {
         setContentPane(mainPanel);
@@ -95,7 +96,7 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
         List<JButton> viewFormButtons = Arrays.asList(getNumber0, getNumber1, getNumber2, getNumber3, getNumber4,
                 getNumber5, getNumber6, getNumber7, getNumber8, getNumber9, getOperatorPlus, getOperatorMinus,
                 getOperatorDivision, getOperatorMultiplication, getPointSeparator, getOpenBracket, getCloseBracket
-                , exponentiation);
+                , exponentiation,sqrt);
         for (JButton setNumber : viewFormButtons) {
             setNumber.addActionListener(calEvent.eventsCalcViewFormButtons());
         }
