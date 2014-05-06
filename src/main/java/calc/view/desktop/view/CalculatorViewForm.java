@@ -48,6 +48,7 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
         bindButtons.put(KeyEvent.VK_DIVIDE, '÷');
         bindButtons.put(KeyEvent.VK_PERIOD, '.');
 
+
     }
 
     public JPanel mainPanel;
@@ -75,6 +76,7 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
     private JButton getResult;
     private JButton getPreviousResult;
     private JButton resetButton;
+    private JButton exponentiation;
 
     public CalculatorViewForm() {
         setContentPane(mainPanel);
@@ -92,7 +94,8 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
     private void calcViewFormButtons() {
         List<JButton> viewFormButtons = Arrays.asList(getNumber0, getNumber1, getNumber2, getNumber3, getNumber4,
                 getNumber5, getNumber6, getNumber7, getNumber8, getNumber9, getOperatorPlus, getOperatorMinus,
-                getOperatorDivision, getOperatorMultiplication, getPointSeparator, getOpenBracket, getCloseBracket);
+                getOperatorDivision, getOperatorMultiplication, getPointSeparator, getOpenBracket, getCloseBracket
+                , exponentiation);
         for (JButton setNumber : viewFormButtons) {
             setNumber.addActionListener(calEvent.eventsCalcViewFormButtons());
         }
@@ -115,6 +118,8 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
         focusingPanel(KeyEvent.VK_BACK_SPACE, 0, "backspace", (AbstractAction) calEvent.backspaceInputField());
         focusingPanel(KeyEvent.VK_9, InputEvent.SHIFT_MASK, "openBracket", calEvent.eventsBindingButtonsKeyboard('('));
         focusingPanel(KeyEvent.VK_0, InputEvent.SHIFT_MASK, "closeBracket", calEvent.eventsBindingButtonsKeyboard(')'));
+        focusingPanel(KeyEvent.VK_6, InputEvent.SHIFT_MASK, "exponentiation", calEvent.eventsBindingButtonsKeyboard('^'));
+
     }
 
     private void focusingPanel(Integer entryKey, Integer componentEvent, String actionName, AbstractAction action) {

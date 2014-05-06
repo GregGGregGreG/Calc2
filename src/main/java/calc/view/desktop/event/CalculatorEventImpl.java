@@ -79,9 +79,11 @@ public class CalculatorEventImpl implements CalculatorEvent {
             @Override
             public void actionPerformed(ActionEvent e) {
                 final JButton source = (JButton) e.getSource();
-                String operator = source.getText();
+                String operator = source.getActionCommand();
                 Character chars = operator.charAt(0);
+                System.out.println(operator);
                 actionNumberAndOperator(chars);
+
             }
         };
     }
@@ -123,14 +125,18 @@ public class CalculatorEventImpl implements CalculatorEvent {
     }
 
     private void openBracket(CalculatorView calcView, String text, String inputText) {
-        openBracket++;
-        if (inputText.equals("0")) calcView.setInputText(text);
-        else if (addOperator) calcView.setInputText(inputText + " " + text);
+        if (inputText.equals("0")) {
+            calcView.setInputText(text);
+            openBracket++;
+        } else if (addOperator == false) {
+            calcView.setInputText(inputText + " " + text);
+            openBracket++;
+        }
     }
 
     private void closeBracket(CalculatorView calcView, String text, String inputText) {
         if (inputText.equals("0")) return;
-        else if (!(closeBracket == openBracket)) {
+        else if (!(closeBracket == openBracket)&& addOperator==true) {
             calcView.setInputText(inputText + text + " ");
             openBracket--;
         }
@@ -181,7 +187,7 @@ public class CalculatorEventImpl implements CalculatorEvent {
 
     private void ansResultCalc() {
         CalculatorView calView = (CalculatorView) ApplicationContext.getBean("calculatorView");
-        if (!(calView.getMemory().length() == 0) && addOperator==false) {
+        if (!(calView.getMemory().length() == 0) && addOperator == false) {
             calView.setInputText(calView.getInputText() + calView.getMemory().substring(6));
             addOperator = true;
         }
