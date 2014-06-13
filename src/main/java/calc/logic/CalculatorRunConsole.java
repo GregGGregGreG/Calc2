@@ -3,21 +3,24 @@ package calc.logic;
 import calc.exceptions.InfixReversPolishException;
 import calc.exceptions.PolishEvaluatorException;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class CalculatorRunConsole {
 
     public static void main(String[] args) throws PolishEvaluatorException, InfixReversPolishException {
-        for (int x = 0; x < 1; x--)
-            getExpr();
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+            String input;
+            System.out.println("Enter expression!");
+            while ((input = br.readLine()) != null) {
+                System.out.println("Result: " + input + " = " + InfixReversePolish.parser(input) + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-    }
 
-    private static void getExpr() throws PolishEvaluatorException, InfixReversPolishException {
-        System.out.println("Enter Expression");
-        String inputExpression;
-        Scanner in = new Scanner(System.in);
-        inputExpression = in.nextLine();
-        System.out.println("Result : " + InfixReversePolish.parser(inputExpression));
+
     }
 }

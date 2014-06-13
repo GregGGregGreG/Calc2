@@ -2,9 +2,11 @@ package calc.view.desktop.event;
 
 import calc.exceptions.InfixReversPolishException;
 import calc.exceptions.PolishEvaluatorException;
-import calc.logic.CalculationUtil;
+import calc.logic.EOperator;
 import calc.logic.InfixReversePolish;
+import calc.model.History;
 import calc.view.desktop.ApplicationContext;
+import calc.view.desktop.history.AddIntoFile;
 import calc.view.desktop.view.CalculatorView;
 
 import javax.swing.*;
@@ -12,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Date;
 
 
 public class CalculatorEventImpl implements CalculatorEvent {
@@ -20,7 +23,6 @@ public class CalculatorEventImpl implements CalculatorEvent {
     private boolean negativNumber = true;
     private int openBracket = 0;
     private int closeBracket = 0;
-
 
     @Override
     public final KeyAdapter keyBlock() {
@@ -102,13 +104,13 @@ public class CalculatorEventImpl implements CalculatorEvent {
         String memory = calView.getMemory();
         if (expressionBox.equals(memory) || expressionBox.length() == 0) {
             if (Character.isDigit(operator)) digit(calView, text, inputText);
-            else if (CalculationUtil.isOperators(operator)) operator(calView, text, inputText);
-            else if (CalculationUtil.isOpenBracket(operator)) openBracket(calView, text, inputText);
-            else if (CalculationUtil.isCloseBracket(operator)) closeBracket(calView, text, inputText);
+            else if (EOperator.IS_OPERATOR.isOpr(operator)) operator(calView, text, inputText);
+            else if (EOperator.OPENBRACKET.isOpr(operator)) openBracket(calView, text, inputText);
+            else if (EOperator.CLOSEBRACKET.isOpr(operator)) closeBracket(calView, text, inputText);
             else if (operator == '.') point(calView, text, inputText);
         } else {
             calView.setExpressionText(memory);
-            if (CalculationUtil.isOperators(operator)) operator(calView, text, inputText);
+            if (EOperator.IS_OPERATOR.isOpr(operator)) operator(calView, text, inputText);
             else calView.setInputText(text);
         }
     }
@@ -169,6 +171,7 @@ public class CalculatorEventImpl implements CalculatorEvent {
 
     private void result() {
         CalculatorView calcView = (CalculatorView) ApplicationContext.getBean("calculatorView");
+        AddIntoFile intoFile = (AddIntoFile) ApplicationContext.getBean("saveMemoryIntoFile");
         String inputText = calcView.getInputText();
         String memory = calcView.getMemory();
         if (inputText.length() == 1) return;
@@ -178,6 +181,8 @@ public class CalculatorEventImpl implements CalculatorEvent {
             String result = InfixReversePolish.parser(inputText);
             calcView.setInputText(result);
             calcView.setMemory("Ans = " + result);
+            calcView.addDataHistoryTable(new History(new Date(), inputText + " =", result));
+            intoFile.addHistory(calcView.getMyData().get(calcView.getMyData().size() - 1).getCurrentHistory());
         } catch (InfixReversPolishException e1) {
             calcView.setExpressionText("Symbol is not supported");
         } catch (PolishEvaluatorException e1) {

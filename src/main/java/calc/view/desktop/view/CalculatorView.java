@@ -1,5 +1,10 @@
 package calc.view.desktop.view;
 
+import calc.model.History;
+
+import javax.swing.*;
+import java.util.ArrayList;
+
 public interface CalculatorView {
     String getInputText();
 
@@ -13,4 +18,11 @@ public interface CalculatorView {
 
     void setMemory(String text);
 
+    JTable getHistoryTable();
+
+    void addDataHistoryTable(History history);
+
+    ArrayList<History> getMyData();
+
+//    void addDataHistoryTable(JTable historyTable);
 }

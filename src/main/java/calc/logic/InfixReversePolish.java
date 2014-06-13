@@ -7,19 +7,19 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
 
-import static calc.logic.CalculationUtil.*;
+import static calc.logic.CalculationUtil.validTypeResult;
 import static calc.logic.PolishEvaluator.evaluator;
 
 public class InfixReversePolish {
     private static StringBuilder evaluation = new StringBuilder();
+    private static Deque<Number> numbers = new LinkedList<>();
     private static Deque<Character> operators = new LinkedList<Character>();
     private static Deque<Character> expressions = new ArrayDeque<Character>();
 
     public static String parser(String expression) throws PolishEvaluatorException, InfixReversPolishException {
-        String safeExpression = expression.trim().replaceAll(" ", "").replaceAll(",", ".").replaceAll("×", "\\*").replaceAll("÷", "\\/")
-                .replaceAll("--", "+").replaceAll("\\+\\-", "-").replaceAll("\\(\\-", "(0-")
-                .replaceAll("/0 ", "&").replaceAll("^-", "0-")
-                .replaceAll("/-", "/(0-").replaceAll("\\*\\-", "\\*(\\0-");
+        String safeExpression = expression.trim().replaceAll(" ", "").replaceAll(",", ".").replaceAll("×", "\\*")
+                .replaceAll("÷", "\\/").replaceAll("--", "+").replaceAll("\\+\\-", "-").replaceAll("\\(\\-", "(0-")
+                .replaceAll("/0 ", "&").replaceAll("^-", "0-").replaceAll("/-", "/(0-").replaceAll("\\*\\-", "\\*(\\0-");
         char[] chars = safeExpression.toCharArray();
         for (char token : chars) {
             expressions.addLast(token);
@@ -28,15 +28,15 @@ public class InfixReversePolish {
             char token = expressions.pollFirst();
             if (Character.isDigit(token) || token == '.' || token == 'E') {
                 evaluation.append(token);
-            } else if (isNotPriority(token)) {
+            } else if (EOperator.IS_NOT_PRIORITY_OPERATOR.isOpr(token)) {
                 cleanStackOperator();
                 operators.add(token);
-            } else if (isPriority(token)) {
+            } else if (EOperator.IS_PRIORITY_OPERATOR.isOpr(token)) {
                 evaluation.append(' ');
                 operators.add(token);
-            } else if (isCloseBracket(token)) {
+            } else if (EOperator.CLOSEBRACKET.isOpr(token)) {
                 cleanStackBracket();
-            } else if (isOpenBracket(token)) {
+            } else if (EOperator.OPENBRACKET.isOpr(token)) {
                 operators.add(token);
             } else {
                 clearAllValuesInStack();
@@ -46,8 +46,8 @@ public class InfixReversePolish {
         cleanStackBracket();
         cleanStackOperator();
         String result = evaluation.toString();
-        System.out.println(evaluation);
         clearAllValuesInStack();
+
         Double calculationExpression = evaluator(result);
         return validTypeResult(calculationExpression);
 
@@ -56,7 +56,7 @@ public class InfixReversePolish {
     private static void cleanStackBracket() {
         evaluation.append(' ');
         char lastOperator = ' ';
-        while (!(isOpenBracket(lastOperator)) && !(operators.isEmpty())) {
+        while (!(EOperator.OPENBRACKET.isOpr(lastOperator)) && !(operators.isEmpty())) {
             evaluation.append(lastOperator = operators.pollLast());
         }
     }
@@ -66,7 +66,7 @@ public class InfixReversePolish {
      */
     private static void cleanStackOperator() {
         evaluation.append(' ');
-        while (!operators.isEmpty() && !isOpenBracket(operators.peekLast())) {
+        while (!operators.isEmpty() && !EOperator.OPENBRACKET.isOpr(operators.peekLast())) {
             evaluation.append(operators.pollLast());
         }
     }

@@ -1,17 +1,20 @@
 package calc.view.desktop.view;
 
+import calc.model.History;
 import calc.view.desktop.ApplicationContext;
 import calc.view.desktop.event.CalculatorEvent;
+import calc.view.desktop.history.MyModelTable;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 import static calc.view.desktop.view.CalculatorUtil.setToScreenCenter;
 
@@ -47,15 +50,13 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
         bindButtons.put(KeyEvent.VK_MULTIPLY, '×');
         bindButtons.put(KeyEvent.VK_DIVIDE, '÷');
         bindButtons.put(KeyEvent.VK_PERIOD, '.');
-
-
     }
 
-    public JPanel mainPanel;
-    public JFormattedTextField inputField;
-    public JTextField expressionBox;
-    public StringBuilder memoryCalc = new StringBuilder();
-    private CalculatorEvent calEvent = (CalculatorEvent) ApplicationContext.getBean("calculatorEvent");
+    private JPanel mainPanel;
+
+    private JFormattedTextField inputField;
+    private JTextField expressionBox;
+
     private JButton getNumber0;
     private JButton getNumber1;
     private JButton getNumber2;
@@ -67,36 +68,61 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
     private JButton getNumber8;
     private JButton getNumber9;
     private JButton getPointSeparator;
+
     private JButton getOperatorPlus;
     private JButton getOperatorMinus;
     private JButton getOperatorMultiplication;
     private JButton getOperatorDivision;
     private JButton getOpenBracket;
     private JButton getCloseBracket;
+
     private JButton getResult;
     private JButton getPreviousResult;
     private JButton resetButton;
+
     private JButton exponentiation;
     private JButton sqrt;
+    private JList list1;
+
+    private JButton viewButton;
+    private JTable historyTable;
+
+    private JButton test;
+    private JPanel historyPanel;
+    private JScrollPane scrol;
+
+    private boolean historyCalculation = false;
+
+
+    private StringBuilder memoryCalc = new StringBuilder();
+
+
+    private ArrayList<History> myData = new ArrayList<>();
+    private MyModelTable model = new MyModelTable(myData);
+    private CalculatorEvent calEvent = (CalculatorEvent) ApplicationContext.getBean("calculatorEvent");
+
 
     public CalculatorViewForm() {
         setContentPane(mainPanel);
         setTitle("Калькулятор");
         setVisible(true);
-        pack();
+        setSize(276, 296);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         expressionBox.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         inputField.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         setToScreenCenter(this);
-        calcViewFormButtons();
+        calcViewFormComponent();
         bindingButtonsKeyboard();
+
     }
 
-    private void calcViewFormButtons() {
+
+    private void calcViewFormComponent() {
         List<JButton> viewFormButtons = Arrays.asList(getNumber0, getNumber1, getNumber2, getNumber3, getNumber4,
                 getNumber5, getNumber6, getNumber7, getNumber8, getNumber9, getOperatorPlus, getOperatorMinus,
                 getOperatorDivision, getOperatorMultiplication, getPointSeparator, getOpenBracket, getCloseBracket
-                , exponentiation,sqrt);
+                , exponentiation, sqrt);
         for (JButton setNumber : viewFormButtons) {
             setNumber.addActionListener(calEvent.eventsCalcViewFormButtons());
         }
@@ -104,6 +130,37 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
         resetButton.addActionListener(calEvent.resetCalc());
         getResult.addActionListener(calEvent.getResultCalc());
         getPreviousResult.addActionListener(calEvent.getAnsResultCalc());
+        viewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!historyCalculation) {
+                    setSize(776, 296);
+                    historyCalculation = true;
+                } else {
+                    setSize(276, 296);
+                    historyCalculation = false;
+                }
+            }
+        });
+        test.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String tets = myData.get(myData.size() - 1).getCurrentHistory();
+                System.out.println(tets);
+            }
+        });
+        historyTable.setModel(model);
+        DefaultTableCellRenderer DTCRendererColum1 = new DefaultTableCellRenderer();
+        DTCRendererColum1.setHorizontalAlignment(JLabel.LEFT);
+        DefaultTableCellRenderer DTCRendererColum0 = new DefaultTableCellRenderer();
+        DTCRendererColum0.setHorizontalAlignment(JLabel.RIGHT);
+        historyTable.getColumnModel().getColumn(2).setPreferredWidth(5);
+        historyTable.getColumnModel().getColumn(1).setPreferredWidth(10);
+        historyTable.getColumnModel().getColumn(0).setPreferredWidth(200);
+        historyTable.getColumnModel().getColumn(1).setCellRenderer(DTCRendererColum1);
+        historyTable.getColumnModel().getColumn(0).setCellRenderer(DTCRendererColum0);
+
+
     }
 
     private void bindingButtonsKeyboard() {
@@ -121,6 +178,7 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
         focusingPanel(KeyEvent.VK_0, InputEvent.SHIFT_MASK, "closeBracket", calEvent.eventsBindingButtonsKeyboard(')'));
         focusingPanel(KeyEvent.VK_6, InputEvent.SHIFT_MASK, "exponentiation", calEvent.eventsBindingButtonsKeyboard('^'));
 
+
     }
 
     private void focusingPanel(Integer entryKey, Integer componentEvent, String actionName, AbstractAction action) {
@@ -131,6 +189,7 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
         mainInputMap.put(KeyStroke.getKeyStroke(entryKey, componentEvent), actionName);
         actionMap.put(actionName, action);
     }
+
 
     @Override
     public String getInputText() {
@@ -164,4 +223,17 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
         memoryCalc.append(text);
     }
 
+    @Override
+    public JTable getHistoryTable() {
+        return historyTable;
+    }
+
+    @Override
+    public void addDataHistoryTable(History history) {
+        model.setValueAdd(history);
+    }
+    @Override
+    public ArrayList<History> getMyData() {
+        return myData;
+    }
 }

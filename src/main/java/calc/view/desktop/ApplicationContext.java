@@ -1,7 +1,7 @@
 package calc.view.desktop;
 
 import java.util.HashMap;
-import java.util.Map;
+        import java.util.Map;
 
 public class ApplicationContext {
     protected final Map<String, Object> context = new HashMap<>();

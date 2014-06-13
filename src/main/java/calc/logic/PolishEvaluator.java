@@ -13,10 +13,10 @@ public class PolishEvaluator {
         StringBuilder currentNumber = new StringBuilder();
         char[] chars = expression.toCharArray();
         for (char token : chars) {
-            if (isOperators(token)) {
-                if (expStack.size() > 1 || (expStack.size() == 1 && isBinaryOperation(token)))
-                    if (isBinaryOperation(token)) {
-                        expStack.addLast(calculationBinaryOpration(token, expStack.pollLast()));
+            if (EOperator.IS_OPERATOR.isOpr(token)) {
+                if (expStack.size() > 1 || (expStack.size() == 1 && EOperator.BINARY_OPERATION.isOpr(token)))
+                    if (EOperator.BINARY_OPERATION.isOpr(token)) {
+                        expStack.addLast(calculationBinaryOperation(token, expStack.pollLast()));
                     } else {
                         expStack.addLast(calculation(token, expStack.pollLast(), expStack.pollLast()));
                     }
