@@ -1,7 +1,6 @@
 package calc.logic;
 
 import calc.exceptions.InfixReversPolishException;
-import calc.exceptions.PolishEvaluatorException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +8,7 @@ import java.io.InputStreamReader;
 
 public class CalculatorRunConsole {
 
-    public static void main(String[] args) throws PolishEvaluatorException, InfixReversPolishException {
+    public static void main(String[] args) throws  InfixReversPolishException {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
             String input;
             System.out.println("Enter expression!");

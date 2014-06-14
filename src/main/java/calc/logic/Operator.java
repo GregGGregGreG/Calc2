@@ -55,6 +55,14 @@ public enum Operator {
         return token == ')';
     }
 
+    public static boolean isOpenBracket(Operator operator) {
+        return operator == OPENBRACKET;
+    }
+
+    public static boolean isCloseBracket(Operator operator) {
+        return operator == CLOSEBRACKET;
+    }
+
     public static boolean isBinary(Operator operator) {
         return operator == SQRT;
     }

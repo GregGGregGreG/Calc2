@@ -1,22 +1,20 @@
 package calc.logic;
 
 import calc.exceptions.InfixReversPolishException;
-import calc.exceptions.PolishEvaluatorException;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
 
 import static calc.logic.CalculationUtil.validTypeResult;
-import static calc.logic.PolishEvaluator.evaluator;
 
 public class InfixReversePolish {
     private static StringBuilder evaluation = new StringBuilder();
-    private static Deque<Number> numbers = new LinkedList<>();
-    private static Deque<Character> operators = new LinkedList<>();
+    private static Deque<Double> numbers = new LinkedList<>();
+    private static Deque<Operator> operators = new LinkedList<>();
     private static Deque<Character> expressions = new ArrayDeque<>();
 
-    public static String parser(String expression) throws PolishEvaluatorException, InfixReversPolishException {
+    public static String parser(String expression) throws  InfixReversPolishException {
         for (char token : safeExpression(expression)) {
             expressions.addLast(token);
         }
@@ -25,30 +23,31 @@ public class InfixReversePolish {
             if (Character.isDigit(token) || token == '.' || token == 'E') {
                 evaluation.append(token);
             } else if (Operator.is(token)) {
+                if (evaluation.length() > 0) numbers.add(Double.valueOf(String.valueOf(evaluation)));
+                evaluation = new StringBuilder();
                 Operator operator = Operator.of(token);
                 if (Operator.isNotPriority(operator)) {
                     cleanStackOperator();
-                    operators.add(operator.getToken());
+                    operators.add(operator);
                 } else if (Operator.isPriority(operator)) {
-                    evaluation.append(' ');
-                    operators.add(operator.getToken());
+                    operators.add(operator);
                 } else if (operator == Operator.CLOSEBRACKET) {
                     cleanStackBracket();
                 } else if (operator == Operator.OPENBRACKET) {
-                    operators.add(operator.getToken());
+                    operators.add(operator);
                 }
             } else {
                 clearAllValuesInStack();
                 throw new InfixReversPolishException("Token is not supported = " + token);
             }
         }
+        if (evaluation.length() > 0) numbers.add(Double.valueOf(String.valueOf(evaluation)));
+        evaluation = new StringBuilder();
         cleanStackBracket();
         cleanStackOperator();
-        String result = evaluation.toString();
         clearAllValuesInStack();
 
-        Double calculationExpression = evaluator(result);
-        return validTypeResult(calculationExpression);
+        return validTypeResult(numbers.pollLast());
 
     }
 
@@ -69,13 +68,17 @@ public class InfixReversePolish {
     }
 
     private static void cleanStackBracket() {
-        evaluation.append(' ');
-        while (!operators.isEmpty()) {
+        while (!operators.isEmpty() && !numbers.isEmpty()) {
             if (Operator.isOpenBracket(operators.peekLast())) {
                 operators.removeLast();
                 return;
             }
-            evaluation.append(operators.pollLast());
+            Operator operator = (operators.pollLast());
+            if (Operator.isBinary(operator)) {
+                numbers.addLast(Operator.calculation(operator, numbers.pollLast()));
+            } else {
+                numbers.addLast(Operator.calculation(operator, numbers.pollLast(), numbers.pollLast()));
+            }
         }
     }
 
@@ -83,9 +86,14 @@ public class InfixReversePolish {
     Defecating stack operators to open bracket opereta inclusive.
      */
     private static void cleanStackOperator() {
-        evaluation.append(' ');
-        while (!operators.isEmpty() && !Operator.isOpenBracket(operators.peekLast())) {
-            evaluation.append(operators.pollLast());
+
+        while (numbers.size() >= 2 && !Operator.isOpenBracket(operators.peekLast())) {
+            Operator operator = (operators.pollLast());
+            if (Operator.isBinary(operator)) {
+                numbers.addLast(Operator.calculation(operator, numbers.pollLast()));
+            } else {
+                numbers.addLast(Operator.calculation(operator, numbers.pollLast(), numbers.pollLast()));
+            }
         }
     }
 
