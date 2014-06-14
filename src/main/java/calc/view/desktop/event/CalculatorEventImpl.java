@@ -2,10 +2,11 @@ package calc.view.desktop.event;
 
 import calc.exceptions.InfixReversPolishException;
 import calc.exceptions.PolishEvaluatorException;
-import calc.logic.EOperator;
 import calc.logic.InfixReversePolish;
+import calc.logic.Operator;
 import calc.model.History;
 import calc.view.desktop.ApplicationContext;
+import calc.view.desktop.history.AddIntoDB;
 import calc.view.desktop.history.AddIntoFile;
 import calc.view.desktop.view.CalculatorView;
 
@@ -104,13 +105,13 @@ public class CalculatorEventImpl implements CalculatorEvent {
         String memory = calView.getMemory();
         if (expressionBox.equals(memory) || expressionBox.length() == 0) {
             if (Character.isDigit(operator)) digit(calView, text, inputText);
-            else if (EOperator.IS_OPERATOR.isOpr(operator)) operator(calView, text, inputText);
-            else if (EOperator.OPENBRACKET.isOpr(operator)) openBracket(calView, text, inputText);
-            else if (EOperator.CLOSEBRACKET.isOpr(operator)) closeBracket(calView, text, inputText);
+            else if (Operator.isBasic(operator)) operator(calView, text, inputText);
+            else if (Operator.isOpenBracket(operator)) openBracket(calView, text, inputText);
+            else if (Operator.isCloseBracket(operator)) closeBracket(calView, text, inputText);
             else if (operator == '.') point(calView, text, inputText);
         } else {
             calView.setExpressionText(memory);
-            if (EOperator.IS_OPERATOR.isOpr(operator)) operator(calView, text, inputText);
+            if (Operator.is(operator)) operator(calView, text, inputText);
             else calView.setInputText(text);
         }
     }
@@ -172,6 +173,8 @@ public class CalculatorEventImpl implements CalculatorEvent {
     private void result() {
         CalculatorView calcView = (CalculatorView) ApplicationContext.getBean("calculatorView");
         AddIntoFile intoFile = (AddIntoFile) ApplicationContext.getBean("saveMemoryIntoFile");
+        AddIntoDB intoDB = (AddIntoDB) ApplicationContext.getBean("saveDB");
+
         String inputText = calcView.getInputText();
         String memory = calcView.getMemory();
         if (inputText.length() == 1) return;
@@ -183,6 +186,7 @@ public class CalculatorEventImpl implements CalculatorEvent {
             calcView.setMemory("Ans = " + result);
             calcView.addDataHistoryTable(new History(new Date(), inputText + " =", result));
             intoFile.addHistory(calcView.getMyData().get(calcView.getMyData().size() - 1).getCurrentHistory());
+            intoDB.addData(inputText,result,new Date());
         } catch (InfixReversPolishException e1) {
             calcView.setExpressionText("Symbol is not supported");
         } catch (PolishEvaluatorException e1) {

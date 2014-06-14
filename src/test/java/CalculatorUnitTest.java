@@ -65,8 +65,6 @@ public class CalculatorUnitTest {
         Assert.assertTrue(infixReversePolish.parser("2^65").equals("3.6893488147419103E19"));
     }
 
-
-
     @Test
     public void testAdditionOfFloatingPointNumbers() throws Exception {
         Assert.assertTrue(infixReversePolish.parser("23.66+3.454").equals("27.114"));

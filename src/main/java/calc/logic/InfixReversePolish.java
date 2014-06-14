@@ -13,31 +13,30 @@ import static calc.logic.PolishEvaluator.evaluator;
 public class InfixReversePolish {
     private static StringBuilder evaluation = new StringBuilder();
     private static Deque<Number> numbers = new LinkedList<>();
-    private static Deque<Character> operators = new LinkedList<Character>();
-    private static Deque<Character> expressions = new ArrayDeque<Character>();
+    private static Deque<Character> operators = new LinkedList<>();
+    private static Deque<Character> expressions = new ArrayDeque<>();
 
     public static String parser(String expression) throws PolishEvaluatorException, InfixReversPolishException {
-        String safeExpression = expression.trim().replaceAll(" ", "").replaceAll(",", ".").replaceAll("×", "\\*")
-                .replaceAll("÷", "\\/").replaceAll("--", "+").replaceAll("\\+\\-", "-").replaceAll("\\(\\-", "(0-")
-                .replaceAll("/0 ", "&").replaceAll("^-", "0-").replaceAll("/-", "/(0-").replaceAll("\\*\\-", "\\*(\\0-");
-        char[] chars = safeExpression.toCharArray();
-        for (char token : chars) {
+        for (char token : safeExpression(expression)) {
             expressions.addLast(token);
         }
         while (!expressions.isEmpty()) {
             char token = expressions.pollFirst();
             if (Character.isDigit(token) || token == '.' || token == 'E') {
                 evaluation.append(token);
-            } else if (EOperator.IS_NOT_PRIORITY_OPERATOR.isOpr(token)) {
-                cleanStackOperator();
-                operators.add(token);
-            } else if (EOperator.IS_PRIORITY_OPERATOR.isOpr(token)) {
-                evaluation.append(' ');
-                operators.add(token);
-            } else if (EOperator.CLOSEBRACKET.isOpr(token)) {
-                cleanStackBracket();
-            } else if (EOperator.OPENBRACKET.isOpr(token)) {
-                operators.add(token);
+            } else if (Operator.is(token)) {
+                Operator operator = Operator.of(token);
+                if (Operator.isNotPriority(operator)) {
+                    cleanStackOperator();
+                    operators.add(operator.getToken());
+                } else if (Operator.isPriority(operator)) {
+                    evaluation.append(' ');
+                    operators.add(operator.getToken());
+                } else if (operator == Operator.CLOSEBRACKET) {
+                    cleanStackBracket();
+                } else if (operator == Operator.OPENBRACKET) {
+                    operators.add(operator.getToken());
+                }
             } else {
                 clearAllValuesInStack();
                 throw new InfixReversPolishException("Token is not supported = " + token);
@@ -53,11 +52,30 @@ public class InfixReversePolish {
 
     }
 
+    private static char[] safeExpression(String expression) {
+        return expression.trim()
+                .replaceAll(" ", "")
+                .replaceAll(",", ".")
+                .replaceAll("×", "\\*")
+                .replaceAll("÷", "\\/")
+                .replaceAll("--", "+")
+                .replaceAll("\\+\\-", "-")
+                .replaceAll("\\(\\-", "(0-")
+                .replaceAll("/0 ", "&")
+                .replaceAll("^-", "0-")
+                .replaceAll("/-", "/(0-")
+                .replaceAll("\\*\\-", "\\*(\\0-")
+                .toCharArray();
+    }
+
     private static void cleanStackBracket() {
         evaluation.append(' ');
-        char lastOperator = ' ';
-        while (!(EOperator.OPENBRACKET.isOpr(lastOperator)) && !(operators.isEmpty())) {
-            evaluation.append(lastOperator = operators.pollLast());
+        while (!operators.isEmpty()) {
+            if (Operator.isOpenBracket(operators.peekLast())) {
+                operators.removeLast();
+                return;
+            }
+            evaluation.append(operators.pollLast());
         }
     }
 
@@ -66,7 +84,7 @@ public class InfixReversePolish {
      */
     private static void cleanStackOperator() {
         evaluation.append(' ');
-        while (!operators.isEmpty() && !EOperator.OPENBRACKET.isOpr(operators.peekLast())) {
+        while (!operators.isEmpty() && !Operator.isOpenBracket(operators.peekLast())) {
             evaluation.append(operators.pollLast());
         }
     }
