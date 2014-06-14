@@ -1,10 +1,10 @@
-package calculatort;
+package calculator;
 
-import calculatort.view.desktop.ApplicationContext;
-import calculatort.view.desktop.event.CalculatorEventImpl;
-import calculatort.view.desktop.history.AddIntoDB;
-import calculatort.view.desktop.history.AddIntoFile;
-import calculatort.view.desktop.view.CalculatorViewForm;
+import calculator.view.desktop.ApplicationContext;
+import calculator.view.desktop.event.CalculatorEventImpl;
+import calculator.view.desktop.history.AddIntoDB;
+import calculator.view.desktop.history.AddIntoFile;
+import calculator.view.desktop.view.CalculatorViewForm;
 
 import javax.swing.*;
 

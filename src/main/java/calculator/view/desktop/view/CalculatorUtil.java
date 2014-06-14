@@ -1,4 +1,4 @@
-package calculatort.view.desktop.view;
+package calculator.view.desktop.view;
 
 import java.awt.*;
 

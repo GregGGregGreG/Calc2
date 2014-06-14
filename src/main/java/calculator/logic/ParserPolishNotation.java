@@ -1,10 +1,10 @@
-package calculatort.logic;
+package calculator.logic;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
 
-import static calculatort.logic.CalculationUtil.validTypeResult;
+import static calculator.logic.CalculationUtil.validTypeResult;
 
 public class ParserPolishNotation {
 

@@ -1,9 +1,9 @@
-package calculatort.view.desktop.view;
+package calculator.view.desktop.view;
 
-import calculatort.model.History;
-import calculatort.view.desktop.ApplicationContext;
-import calculatort.view.desktop.event.CalculatorEvent;
-import calculatort.view.desktop.history.MyModelTable;
+import calculator.model.History;
+import calculator.view.desktop.ApplicationContext;
+import calculator.view.desktop.event.CalculatorEvent;
+import calculator.view.desktop.history.MyModelTable;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 
-import static calculatort.view.desktop.view.CalculatorUtil.setToScreenCenter;
+import static calculator.view.desktop.view.CalculatorUtil.setToScreenCenter;
 
 
 public class CalculatorViewForm extends JFrame implements CalculatorView, Serializable {

@@ -1,4 +1,4 @@
-package calculatort.view.desktop.history;
+package calculator.view.desktop.history;
 
 import java.io.RandomAccessFile;
 import java.text.SimpleDateFormat;

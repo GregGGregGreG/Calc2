@@ -1,4 +1,4 @@
-package calculatort.logic;
+package calculator.logic;
 
 public enum Operator {
     PLUS('+'),

@@ -1,7 +1,7 @@
-package calculatort;
+package calculator;
 
-import calculatort.logic.ExceptionParserPolishNotatio;
-import calculatort.logic.ParserPolishNotation;
+import calculator.logic.ExceptionParserPolishNotatio;
+import calculator.logic.ParserPolishNotation;
 
 import java.io.BufferedReader;
 import java.io.IOException;

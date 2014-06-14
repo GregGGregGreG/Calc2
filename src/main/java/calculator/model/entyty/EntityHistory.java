@@ -1,4 +1,4 @@
-package calculatort.model.entyty;
+package calculator.model.entyty;
 
 
 import javax.persistence.Column;

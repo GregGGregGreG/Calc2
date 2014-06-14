@@ -1,13 +1,13 @@
-package calculatort.view.desktop.event;
+package calculator.view.desktop.event;
 
-import calculatort.logic.ExceptionParserPolishNotatio;
-import calculatort.logic.ParserPolishNotation;
-import calculatort.logic.Operator;
-import calculatort.model.History;
-import calculatort.view.desktop.ApplicationContext;
-import calculatort.view.desktop.history.AddIntoDB;
-import calculatort.view.desktop.history.AddIntoFile;
-import calculatort.view.desktop.view.CalculatorView;
+import calculator.logic.ExceptionParserPolishNotatio;
+import calculator.logic.ParserPolishNotation;
+import calculator.logic.Operator;
+import calculator.model.History;
+import calculator.view.desktop.ApplicationContext;
+import calculator.view.desktop.history.AddIntoDB;
+import calculator.view.desktop.history.AddIntoFile;
+import calculator.view.desktop.view.CalculatorView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
