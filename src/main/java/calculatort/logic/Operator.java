@@ -1,4 +1,4 @@
-package calc.logic;
+package calculatort.logic;
 
 public enum Operator {
     PLUS('+'),
@@ -43,7 +43,7 @@ public enum Operator {
     }
 
     public static boolean isBasic(char token) {
-        return token == '+' || token == '-' || token == '/' || token == '*' || token=='÷' || token == '×';
+        return token == '+' || token == '-' || token == '/' || token == '*' || token == '÷' || token == '×';
     }
 
 

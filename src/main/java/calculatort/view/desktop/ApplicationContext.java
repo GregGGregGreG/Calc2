@@ -1,4 +1,4 @@
-package calc.view.desktop;
+package calculatort.view.desktop;
 
 import java.util.HashMap;
         import java.util.Map;

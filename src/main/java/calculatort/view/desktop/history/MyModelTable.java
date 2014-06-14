@@ -1,6 +1,6 @@
-package calc.view.desktop.history;
+package calculatort.view.desktop.history;
 
-import calc.model.History;
+import calculatort.model.History;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;

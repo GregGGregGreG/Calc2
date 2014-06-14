@@ -1,14 +1,13 @@
-package calc.view.desktop.event;
+package calculatort.view.desktop.event;
 
-import calc.exceptions.InfixReversPolishException;
-import calc.exceptions.PolishEvaluatorException;
-import calc.logic.InfixReversePolish;
-import calc.logic.Operator;
-import calc.model.History;
-import calc.view.desktop.ApplicationContext;
-import calc.view.desktop.history.AddIntoDB;
-import calc.view.desktop.history.AddIntoFile;
-import calc.view.desktop.view.CalculatorView;
+import calculatort.logic.ExceptionParserPolishNotatio;
+import calculatort.logic.ParserPolishNotation;
+import calculatort.logic.Operator;
+import calculatort.model.History;
+import calculatort.view.desktop.ApplicationContext;
+import calculatort.view.desktop.history.AddIntoDB;
+import calculatort.view.desktop.history.AddIntoFile;
+import calculatort.view.desktop.view.CalculatorView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -181,16 +180,15 @@ public class CalculatorEventImpl implements CalculatorEvent {
         if (!(memory.length() == 0) && inputText.equals(memory.substring(6))) return;
         calcView.setExpressionText(inputText + " = ");
         try {
-            String result = InfixReversePolish.parser(inputText);
+            String result = ParserPolishNotation.parser(inputText);
             calcView.setInputText(result);
             calcView.setMemory("Ans = " + result);
             calcView.addDataHistoryTable(new History(new Date(), inputText + " =", result));
             intoFile.addHistory(calcView.getMyData().get(calcView.getMyData().size() - 1).getCurrentHistory());
             intoDB.addData(inputText,result,new Date());
-        } catch (InfixReversPolishException e1) {
+        } catch (ExceptionParserPolishNotatio e1) {
             calcView.setExpressionText("Symbol is not supported");
-        } catch (PolishEvaluatorException e1) {
-            calcView.setExpressionText("Invalid expression");
+
         }
     }
 

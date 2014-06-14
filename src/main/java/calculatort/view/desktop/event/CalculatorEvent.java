@@ -1,4 +1,4 @@
-package calc.view.desktop.event;
+package calculatort.view.desktop.event;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;

@@ -1,8 +1,6 @@
-package calc.logic;
+package calculatort.logic;
 
 public class CalculationUtil {
-    private CalculationUtil() {
-    }
 
     public static String validTypeResult(double doubleResult) {
         int intResult = (int) doubleResult;

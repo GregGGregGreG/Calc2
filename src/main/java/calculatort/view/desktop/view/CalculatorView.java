@@ -1,6 +1,6 @@
-package calc.view.desktop.view;
+package calculatort.view.desktop.view;
 
-import calc.model.History;
+import calculatort.model.History;
 
 import javax.swing.*;
 import java.util.ArrayList;

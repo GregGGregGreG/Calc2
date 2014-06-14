@@ -1,6 +1,4 @@
-package calc.model.entyty;
-
-import calc.model.entyty.EntityHistory;
+package calculatort.model.entyty;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;

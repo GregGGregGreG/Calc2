@@ -1,7 +1,7 @@
-package calc.view.desktop.history;
+package calculatort.view.desktop.history;
 
-import calc.model.entyty.EntityHistory;
-import calc.model.entyty.ServiceHistory;
+import calculatort.model.entyty.EntityHistory;
+import calculatort.model.entyty.ServiceHistory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

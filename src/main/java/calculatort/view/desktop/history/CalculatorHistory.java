@@ -1,4 +1,4 @@
-package calc.view.desktop.history;
+package calculatort.view.desktop.history;
 
 public interface CalculatorHistory {
 
