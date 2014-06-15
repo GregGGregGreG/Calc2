@@ -13,7 +13,7 @@ public class ParserPolishNotation {
     private static Deque<Operator> operators = new LinkedList<>();
     private static Deque<Character> expressions = new ArrayDeque<>();
 
-    public static String parser(String expression) throws ExceptionParserPolishNotatio {
+    public static String parser(String expression) throws ExceptionParserPolishNotation {
         for (char token : safeExpression(expression)) {
             expressions.addLast(token);
         }
@@ -37,7 +37,7 @@ public class ParserPolishNotation {
                 }
             } else {
                 cleanParser();
-                throw new ExceptionParserPolishNotatio("Token is not supported = " + token);
+                throw new ExceptionParserPolishNotation("Token is not supported = " + token);
             }
         }
         pushBracket();
@@ -60,6 +60,8 @@ public class ParserPolishNotation {
                 .replaceAll("^-", "0-")                 // If a negative number -  first symbol
                 .replaceAll("/-", "/(0-")               // Division by a negative number
                 .replaceAll("\\*\\-", "\\*(\\0-")       // Multiplication by a negative number
+                .replaceAll("√", "p")                    // Valid sqrt sign
+                .replaceAll("cos", "c")                   //Valid cos
                 .toCharArray();
     }
 
@@ -78,7 +80,10 @@ public class ParserPolishNotation {
     Defecating stack operators to open bracket operator inclusive.
      */
     private static void pushOperators() {
-        while (operands.size() >= 2 && !Operator.isOpenBracket(operators.peekLast())) {
+//        while ((operands.size() >= 2 && !Operator.isOpenBracket(operators.peekLast())) || Operator.isBinary(operators.peekLast())) {
+//            calculation();
+//        }
+        while ((operands.size() >= 2 && !Operator.isOpenBracket(operators.peekLast())) || Operator.isBinary(operators.peekLast())) {
             calculation();
         }
     }

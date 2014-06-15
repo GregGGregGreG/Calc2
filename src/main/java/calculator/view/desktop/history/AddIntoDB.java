@@ -8,9 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.Date;
 
-/**
- * Created by Userr on 13.06.2014.
- */
+
 public class AddIntoDB {
     public AddIntoDB() {
         em.getTransaction().begin();

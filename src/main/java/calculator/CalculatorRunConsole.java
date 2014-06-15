@@ -1,6 +1,6 @@
 package calculator;
 
-import calculator.logic.ExceptionParserPolishNotatio;
+import calculator.logic.ExceptionParserPolishNotation;
 import calculator.logic.ParserPolishNotation;
 
 import java.io.BufferedReader;
@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 
 public class CalculatorRunConsole {
 
-    public static void main(String[] args) throws ExceptionParserPolishNotatio {
+    public static void main(String[] args) throws ExceptionParserPolishNotation {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
             String input;
             System.out.println("Enter expression!");

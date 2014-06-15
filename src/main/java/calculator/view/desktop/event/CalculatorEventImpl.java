@@ -1,6 +1,6 @@
 package calculator.view.desktop.event;
 
-import calculator.logic.ExceptionParserPolishNotatio;
+import calculator.logic.ExceptionParserPolishNotation;
 import calculator.logic.ParserPolishNotation;
 import calculator.logic.Operator;
 import calculator.model.History;
@@ -110,7 +110,7 @@ public class CalculatorEventImpl implements CalculatorEvent {
             else if (operator == '.') point(calView, text, inputText);
         } else {
             calView.setExpressionText(memory);
-            if (Operator.is(operator)) operator(calView, text, inputText);
+            if (Operator.isBasic(operator)) operator(calView, text, inputText);
             else calView.setInputText(text);
         }
     }
@@ -186,7 +186,7 @@ public class CalculatorEventImpl implements CalculatorEvent {
             calcView.addDataHistoryTable(new History(new Date(), inputText + " =", result));
             intoFile.addHistory(calcView.getMyData().get(calcView.getMyData().size() - 1).getCurrentHistory());
             intoDB.addData(inputText,result,new Date());
-        } catch (ExceptionParserPolishNotatio e1) {
+        } catch (ExceptionParserPolishNotation e1) {
             calcView.setExpressionText("Symbol is not supported");
 
         }

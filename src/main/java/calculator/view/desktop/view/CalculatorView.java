@@ -24,5 +24,4 @@ public interface CalculatorView {
 
     ArrayList<History> getMyData();
 
-//    void addDataHistoryTable(JTable historyTable);
 }

@@ -8,7 +8,8 @@ public enum Operator {
     OPENBRACKET('('),
     CLOSEBRACKET(')'),
     POW('^'),
-    SQRT('√');
+    COS('c'),
+    SQRT('p');
 
     private final Character token;
 
@@ -43,7 +44,8 @@ public enum Operator {
     }
 
     public static boolean isBasic(char token) {
-        return token == '+' || token == '-' || token == '/' || token == '*' || token == '÷' || token == '×';
+        return token == '+' || token == '-' || token == '/' || token == '*' || token == '÷' || token == '×' ||
+                token == '^' || token == '√' || token == 'c';
     }
 
 
@@ -63,12 +65,13 @@ public enum Operator {
         return operator == CLOSEBRACKET;
     }
 
-    public static boolean isBinary(Operator operator) {
-        return operator == SQRT;
-    }
 
     public static boolean isPriority(Operator operator) {
         return operator == DIVISION || operator == MULTIPLY || isBinary(operator) || operator == POW;
+    }
+
+    public static boolean isBinary(Operator operator) {
+        return operator == SQRT || operator == COS;
     }
 
     public static boolean isNotPriority(Operator operator) {
@@ -103,6 +106,9 @@ public enum Operator {
         switch (operator) {
             case SQRT:
                 result = Math.sqrt(digit);
+                break;
+            case COS:
+                result =Math.cos(digit);
                 break;
         }
         return result;
