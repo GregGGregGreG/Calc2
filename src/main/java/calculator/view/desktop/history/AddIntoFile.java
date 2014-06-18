@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class AddIntoFile implements CalculatorHistory {
     public final String filename = "C:\\folder\\file.txt";
-    private SimpleDateFormat dateFormat = new SimpleDateFormat();
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
     private String data = dateFormat.format(new Date());
 
     public AddIntoFile() {
@@ -14,7 +14,7 @@ public class AddIntoFile implements CalculatorHistory {
     }
 
     @Override
-    public void addHistory(String expression) {
+    public void addExpression(String expression) {
         writeFile(expression);
     }
 

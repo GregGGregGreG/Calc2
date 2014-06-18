@@ -1,19 +1,22 @@
 package calculator.view.desktop.event;
 
 import calculator.logic.ExceptionParserPolishNotation;
-import calculator.logic.ParserPolishNotation;
 import calculator.logic.Operator;
+import calculator.logic.ParserPolishNotation;
 import calculator.model.History;
 import calculator.view.desktop.ApplicationContext;
 import calculator.view.desktop.history.AddIntoDB;
 import calculator.view.desktop.history.AddIntoFile;
+import calculator.view.desktop.history.AddIntoXML;
 import calculator.view.desktop.view.CalculatorView;
 
 import javax.swing.*;
+import javax.xml.bind.JAXBException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.Date;
 
 
@@ -60,7 +63,11 @@ public class CalculatorEventImpl implements CalculatorEvent {
         return new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                result();
+                try {
+                    result();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         };
     }
@@ -169,10 +176,11 @@ public class CalculatorEventImpl implements CalculatorEvent {
         negativNumber = true;
     }
 
-    private void result() {
+    private void result() throws IOException {
         CalculatorView calcView = (CalculatorView) ApplicationContext.getBean("calculatorView");
         AddIntoFile intoFile = (AddIntoFile) ApplicationContext.getBean("saveMemoryIntoFile");
         AddIntoDB intoDB = (AddIntoDB) ApplicationContext.getBean("saveDB");
+        AddIntoXML intoXML = (AddIntoXML) ApplicationContext.getBean("saveXML");
 
         String inputText = calcView.getInputText();
         String memory = calcView.getMemory();
@@ -184,11 +192,15 @@ public class CalculatorEventImpl implements CalculatorEvent {
             calcView.setInputText(result);
             calcView.setMemory("Ans = " + result);
             calcView.addDataHistoryTable(new History(new Date(), inputText + " =", result));
-            intoFile.addHistory(calcView.getMyData().get(calcView.getMyData().size() - 1).getCurrentHistory());
-            intoDB.addData(inputText,result,new Date());
+            intoFile.addExpression(calcView.getMyData().get(calcView.getMyData().size() - 1).getCurrentHistory());
+          //  intoDB.addData(inputText, result, new Date());
+            intoXML.addExpression(inputText, result);
+
         } catch (ExceptionParserPolishNotation e1) {
             calcView.setExpressionText("Symbol is not supported");
 
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
     }
 
