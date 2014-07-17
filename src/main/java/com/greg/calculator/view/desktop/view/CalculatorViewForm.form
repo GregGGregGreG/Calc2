@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.greg.calculator.view.desktop.view.CalculatorViewForm">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="40" width="497" height="351"/>
+    </constraints>
+    <properties>
+      <alignmentX value="0.0"/>
+      <alignmentY value="0.0"/>
+      <autoscrolls value="false"/>
+      <background color="-1"/>
+      <doubleBuffered value="false"/>
+      <enabled value="true"/>
+      <foreground color="-1"/>
+      <minimumSize width="350" height="350"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <toolbar id="a9f0c">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="2" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="-1" height="20"/>
+          </grid>
+        </constraints>
+        <properties>
+          <alignmentX value="0.0"/>
+          <background color="-1"/>
+          <floatable value="false"/>
+          <foreground color="-11289089"/>
+          <inheritsPopupMenu value="true"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="f7126" class="javax.swing.JList" binding="list1" default-binding="true">
+            <constraints/>
+            <properties>
+              <foreground color="-1"/>
+              <inheritsPopupMenu value="true"/>
+              <selectionForeground color="-1"/>
+            </properties>
+          </component>
+          <component id="d13cc" class="javax.swing.JButton" binding="viewHistoryButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <alignmentY value="0.0"/>
+              <autoscrolls value="true"/>
+              <background swing-color="Button.darcula.selectedButtonForeground"/>
+              <borderPainted value="false"/>
+              <defaultCapable value="false"/>
+              <font size="9"/>
+              <margin top="0" left="0" bottom="0" right="0"/>
+              <text value="History Calculation"/>
+            </properties>
+          </component>
+        </children>
+      </toolbar>
+      <grid id="16890" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="10" bottom="10" right="10"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-1"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <grid id="c5564" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="2" fill="1" indent="0" use-parent-layout="true">
+                <preferred-size width="154" height="10"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-1"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="dcb48" class="javax.swing.JTextField" binding="expressionBox" default-binding="true">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="4" hsize-policy="6" anchor="10" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="10"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <alignmentX value="0.0"/>
+                  <alignmentY value="0.0"/>
+                  <autoscrolls value="false"/>
+                  <background color="-1"/>
+                  <disabledTextColor color="-1"/>
+                  <editable value="false"/>
+                  <enabled value="true"/>
+                  <focusAccelerator value="0"/>
+                  <focusCycleRoot value="false"/>
+                  <focusable value="false"/>
+                  <font name="Arial" size="12" style="0"/>
+                  <foreground color="-10066330"/>
+                  <horizontalAlignment value="4"/>
+                  <margin top="0" left="0" bottom="0" right="0"/>
+                  <selectedTextColor color="-52429"/>
+                  <selectionColor color="-65536"/>
+                  <text value=""/>
+                  <verifyInputWhenFocusTarget value="false"/>
+                  <visible value="true"/>
+                </properties>
+              </component>
+              <component id="2ad49" class="javax.swing.JFormattedTextField" binding="inputField">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="4" hsize-policy="0" anchor="10" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="10"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <font name="Arial" size="18"/>
+                  <horizontalAlignment value="4"/>
+                  <inheritsPopupMenu value="false"/>
+                  <margin top="0" left="0" bottom="0" right="5"/>
+                  <text value="0"/>
+                  <toolTipText value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="d2b89" layout-manager="GridLayoutManager" row-count="5" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="true"/>
+            </constraints>
+            <properties>
+              <background color="-1"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="9096a" class="javax.swing.JButton" binding="getNumber1" default-binding="true">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <font name="Helvetica CE" size="15" style="0"/>
+                  <selected value="false"/>
+                  <text value="1"/>
+                </properties>
+              </component>
+              <component id="4add0" class="javax.swing.JButton" binding="getNumber2" default-binding="true">
+                <constraints>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <font name="Helvetica CE" size="15" style="0"/>
+                  <text value="2"/>
+                </properties>
+              </component>
+              <component id="8e11e" class="javax.swing.JButton" binding="getNumber3" default-binding="true">
+                <constraints>
+                  <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <font name="Helvetica CE" size="15" style="0"/>
+                  <text value="3"/>
+                </properties>
+              </component>
+              <component id="318e7" class="javax.swing.JButton" binding="getNumber4">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <font name="Helvetica CE" size="15" style="0"/>
+                  <text value="4"/>
+                </properties>
+              </component>
+              <component id="105b6" class="javax.swing.JButton" binding="getNumber5">
+                <constraints>
+                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <font name="Helvetica CE" size="15" style="0"/>
+                  <text value="5"/>
+                </properties>
+              </component>
+              <component id="3d24e" class="javax.swing.JButton" binding="getNumber6">
+                <constraints>
+                  <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <font name="Helvetica CE" size="15" style="0"/>
+                  <text value="6"/>
+                </properties>
+              </component>
+              <component id="e458" class="javax.swing.JButton" binding="getOperatorMultiplication">
+                <constraints>
+                  <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <actionCommand value="×"/>
+                  <background color="-3355444"/>
+                  <font name="Helvetica CE" size="18" style="1"/>
+                  <foreground color="-16777216"/>
+                  <margin top="0" left="0" bottom="0" right="0"/>
+                  <text value="×"/>
+                </properties>
+              </component>
+              <component id="16133" class="javax.swing.JButton" binding="getNumber7">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <font name="Helvetica CE" size="15" style="0"/>
+                  <text value="7"/>
+                </properties>
+              </component>
+              <component id="8cfd4" class="javax.swing.JButton" binding="getNumber8">
+                <constraints>
+                  <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <font name="Helvetica CE" size="15" style="0"/>
+                  <text value="8"/>
+                </properties>
+              </component>
+              <component id="8f59c" class="javax.swing.JButton" binding="getNumber9">
+                <constraints>
+                  <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <font name="Helvetica CE" size="15" style="0"/>
+                  <text value="9"/>
+                </properties>
+              </component>
+              <component id="6e23" class="javax.swing.JButton" binding="getOperatorMinus">
+                <constraints>
+                  <grid row="3" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <actionCommand value="-"/>
+                  <background color="-3355444"/>
+                  <font name="Helvetica CE" size="18" style="1"/>
+                  <foreground color="-16777216"/>
+                  <margin top="0" left="0" bottom="0" right="0"/>
+                  <text value="-"/>
+                </properties>
+              </component>
+              <component id="ad0ad" class="javax.swing.JButton" binding="getNumber0">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <font name="Helvetica CE" size="15" style="0"/>
+                  <text value="0"/>
+                </properties>
+              </component>
+              <component id="7e67b" class="javax.swing.JButton" binding="getPointSeparator">
+                <constraints>
+                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <font name="Helvetica CE" size="15" style="1"/>
+                  <text value="."/>
+                </properties>
+              </component>
+              <component id="6bdc6" class="javax.swing.JButton" binding="getResult">
+                <constraints>
+                  <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <actionCommand value=""/>
+                  <background color="-13500161"/>
+                  <enabled value="true"/>
+                  <font name="Helvetica CE" size="18" style="1"/>
+                  <foreground color="-1"/>
+                  <horizontalTextPosition value="0"/>
+                  <margin top="0" left="0" bottom="0" right="0"/>
+                  <text value="="/>
+                  <verifyInputWhenFocusTarget value="false"/>
+                </properties>
+              </component>
+              <component id="d62b7" class="javax.swing.JButton" binding="getOperatorPlus">
+                <constraints>
+                  <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <actionCommand value="+"/>
+                  <background color="-3355444"/>
+                  <font name="Helvetica CE" size="18" style="1"/>
+                  <foreground color="-16777216"/>
+                  <margin top="0" left="0" bottom="0" right="0"/>
+                  <text value="+"/>
+                </properties>
+              </component>
+              <component id="1e80a" class="javax.swing.JButton" binding="getOpenBracket">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-3355444"/>
+                  <focusPainted value="false"/>
+                  <focusable value="false"/>
+                  <font name="Helvetica CE" size="15" style="1"/>
+                  <text value="("/>
+                </properties>
+              </component>
+              <component id="9835b" class="javax.swing.JButton" binding="getCloseBracket">
+                <constraints>
+                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-3355444"/>
+                  <font name="Helvetica CE" size="15" style="1"/>
+                  <text value=")"/>
+                </properties>
+              </component>
+              <component id="babea" class="javax.swing.JButton" binding="resetButton">
+                <constraints>
+                  <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-3355444"/>
+                  <font name="Helvetica CE" size="15" style="0"/>
+                  <margin top="3" left="9" bottom="3" right="9"/>
+                  <text value="CE"/>
+                </properties>
+                <clientProperties>
+                  <hideActionText class="java.lang.Boolean" value="true"/>
+                </clientProperties>
+              </component>
+              <component id="36b3d" class="javax.swing.JButton" binding="getOperatorDivision">
+                <constraints>
+                  <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <actionCommand value="÷"/>
+                  <autoscrolls value="false"/>
+                  <background color="-3355444"/>
+                  <font name="Helvetica CE" size="18" style="1"/>
+                  <foreground color="-16777216"/>
+                  <margin top="0" left="0" bottom="0" right="0"/>
+                  <text value="÷"/>
+                </properties>
+                <clientProperties>
+                  <html.disable class="java.lang.Boolean" value="false"/>
+                </clientProperties>
+              </component>
+              <component id="7b740" class="javax.swing.JButton" binding="getPreviousResult">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-3355444"/>
+                  <font name="Helvetica CE" size="15" style="0"/>
+                  <hideActionText value="false"/>
+                  <margin top="2" left="1" bottom="2" right="1"/>
+                  <text value="Ans"/>
+                </properties>
+              </component>
+              <component id="e4efd" class="javax.swing.JButton" binding="exponentiation">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <actionCommand value="^"/>
+                  <background color="-3355444"/>
+                  <font size="15" style="1"/>
+                  <hideActionText value="false"/>
+                  <margin top="2" left="2" bottom="2" right="2"/>
+                  <text value="  x^ "/>
+                </properties>
+              </component>
+              <component id="fb77d" class="javax.swing.JButton" binding="sqrt">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-3355444"/>
+                  <focusTraversalPolicyProvider value="false"/>
+                  <focusable value="false"/>
+                  <font name="Arial Rounded MT Bold" size="15" style="1"/>
+                  <hideActionText value="false"/>
+                  <inheritsPopupMenu value="true"/>
+                  <label value="√"/>
+                  <margin top="2" left="2" bottom="2" right="2"/>
+                  <text value="√"/>
+                </properties>
+              </component>
+              <component id="4a2a4" class="javax.swing.JButton" binding="test">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-3355444"/>
+                  <font size="15" style="1"/>
+                  <hideActionText value="false"/>
+                  <margin top="2" left="2" bottom="2" right="2"/>
+                  <text value="test"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="36527" binding="historyPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="5" left="0" bottom="13" right="10"/>
+        <constraints>
+          <grid row="0" column="1" row-span="2" col-span="1" vsize-policy="7" hsize-policy="7" anchor="1" fill="1" indent="0" use-parent-layout="true">
+            <preferred-size width="650" height="296"/>
+          </grid>
+        </constraints>
+        <properties>
+          <autoscrolls value="true"/>
+          <background color="-1"/>
+          <focusCycleRoot value="false"/>
+          <font size="9" style="0"/>
+          <foreground color="-1"/>
+          <opaque value="false"/>
+          <visible value="true"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <scrollpane id="55b4b" binding="scrol">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-1"/>
+              <foreground color="-1"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="13706" class="javax.swing.JTable" binding="historyTable">
+                <constraints/>
+                <properties>
+                  <autoResizeMode value="4"/>
+                  <background color="-1"/>
+                  <font size="11" style="0"/>
+                  <foreground color="-13421773"/>
+                  <gridColor color="-1"/>
+                  <preferredScrollableViewportSize width="150" height="190"/>
+                  <rowSelectionAllowed value="true"/>
+                  <selectionForeground color="-1"/>
+                  <surrendersFocusOnKeystroke value="true"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>
