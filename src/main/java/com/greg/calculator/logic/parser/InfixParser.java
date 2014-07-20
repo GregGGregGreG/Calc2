@@ -66,6 +66,7 @@ public class InfixParser implements ParserExpression {
                 .replaceAll("\\*\\-", "\\*(\\0-")       // Multiplication by a negative number
                 .replaceAll("√", "p")                   // Valid sqrt sign
                 .replaceAll("cos", "c")                  //Valid cos
+                .replaceAll("E\\+", "E")                   //Valid point floating
                 .toCharArray();
     }
 

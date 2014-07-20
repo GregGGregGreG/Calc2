@@ -1,9 +1,9 @@
 package com.greg.calculator.controler;
 
+import com.greg.calculator.entyty.History;
 import com.greg.calculator.logic.ExceptionParserPolishNotation;
 import com.greg.calculator.logic.Operator;
 import com.greg.calculator.logic.parser.ParserExpression;
-import com.greg.calculator.entyty.History;
 import com.greg.calculator.view.desktop.history.MyModelTable;
 import com.greg.calculator.view.desktop.history.storage.HistoryStorageService;
 import com.greg.calculator.view.desktop.view.CalculatorView;
@@ -110,7 +110,6 @@ public class CalculatorController {
     }
 
     public void result() throws IOException {
-
         String expression = calculatorView.getInputText();
         String memory = calculatorView.getMemory();
         if (expression.length() == 1) return;

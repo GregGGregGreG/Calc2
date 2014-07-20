@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-
 public class CalculatorUnitTest extends BaseTest {
 
     @Autowired
@@ -91,6 +90,7 @@ public class CalculatorUnitTest extends BaseTest {
     @Test
     public void AdditionOfFloatingPointNumbers() throws Exception {
         Assert.assertTrue(infixParser.parser("23.66+3.454").equals("27.114"));
+//        Assert.assertTrue(infixParser.parser("23.66+3.454").equals("27.114"));
     }
 
     @Test

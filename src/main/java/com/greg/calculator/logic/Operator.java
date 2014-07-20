@@ -24,6 +24,8 @@ public enum Operator {
         return token;
     }
 
+    public static final MathContext mc = new MathContext(11);
+
     public static Operator of(Character token) {
         for (Operator operator : Operator.values()) {
             if (operator.token == token) return operator;
@@ -64,17 +66,16 @@ public enum Operator {
     }
 
     public static BigDecimal calculation(Operator operator, BigDecimal second, BigDecimal first) {
-        MathContext mc = new MathContext(11);
         BigDecimal result = null;
         switch (operator) {
             case PLUS:
-                result = first.add(second);
+                result = first.add(second, mc);
                 break;
             case MINUS:
-                result = first.subtract(second);
+                result = first.subtract(second, mc);
                 break;
             case MULTIPLY:
-                result = first.multiply(second);
+                result = first.multiply(second, mc);
                 break;
             case DIVISION:
                 result = first.divide(second, mc);
@@ -86,16 +87,15 @@ public enum Operator {
         return result;
     }
 
-
     public static BigDecimal calculation(Operator operator, BigDecimal digit) {
         Double dDigit = digit.doubleValue();
         BigDecimal result = null;
         switch (operator) {
             case SQRT:
-                result = BigDecimal.valueOf(Math.sqrt(dDigit));
+                result = new BigDecimal(String.valueOf(Math.sqrt(dDigit)), mc);
                 break;
             case COS:
-                result = BigDecimal.valueOf(Math.cos(dDigit));
+                result = new BigDecimal(String.valueOf(Math.cos(dDigit)), mc);
                 break;
         }
         return result;
