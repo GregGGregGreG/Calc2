@@ -1,5 +1,8 @@
 package com.greg.calculator.logic;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 public enum Operator {
     PLUS('+'),
     MINUS('-'),
@@ -60,38 +63,45 @@ public enum Operator {
         return operator == SQRT || operator == COS;
     }
 
-    public static Double calculation(Operator operator, Double right, Double left) {
-        Double result = null;
+    public static BigDecimal calculation(Operator operator, BigDecimal second, BigDecimal first) {
+        MathContext mc = new MathContext(11);
+        BigDecimal result = null;
         switch (operator) {
             case PLUS:
-                result = left + right;
+                result = first.add(second);
                 break;
             case MINUS:
-                result = left - right;
+                result = first.subtract(second);
                 break;
             case MULTIPLY:
-                result = left * right;
+                result = first.multiply(second);
                 break;
             case DIVISION:
-                result = left / right;
+                result = first.divide(second, mc);
                 break;
             case POW:
-                result = Math.pow(left, right);
+                result = new BigDecimal(String.valueOf((Math.pow(first.doubleValue(), second.doubleValue()))), mc);
                 break;
         }
         return result;
     }
 
-    public static Double calculation(Operator operator, Double digit) {
-        Double result = null;
+
+    public static BigDecimal calculation(Operator operator, BigDecimal digit) {
+        Double dDigit = digit.doubleValue();
+        BigDecimal result = null;
         switch (operator) {
             case SQRT:
-                result = Math.sqrt(digit);
+                result = BigDecimal.valueOf(Math.sqrt(dDigit));
                 break;
             case COS:
-                result = Math.cos(digit);
+                result = BigDecimal.valueOf(Math.cos(dDigit));
                 break;
         }
         return result;
+    }
+
+    public static String typeDigit(BigDecimal bdNumber) {
+        return bdNumber.toString().replaceAll("\\.0$", "");
     }
 }

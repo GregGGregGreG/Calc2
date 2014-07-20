@@ -4,17 +4,16 @@ import com.greg.calculator.logic.ExceptionParserPolishNotation;
 import com.greg.calculator.logic.Operator;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
-
-import static com.greg.calculator.logic.CalculationUtil.validTypeResult;
 
 @Component
 public class InfixParser implements ParserExpression {
 
     private static StringBuilder number = new StringBuilder();
-    private static Deque<Double> operands = new LinkedList<>();
+    private static Deque<BigDecimal> operands = new LinkedList<>();
     private static Deque<Operator> operators = new LinkedList<>();
     private static Deque<Character> expression = new ArrayDeque<>();
 
@@ -29,7 +28,7 @@ public class InfixParser implements ParserExpression {
             if (Character.isDigit(token) || token == '.' || token == 'E') {
                 number.append(token);
             } else if (Operator.is(token)) {
-                if (number.length() > 0) operands.add(Double.valueOf(String.valueOf(number)));
+                if (number.length() > 0) operands.add(new BigDecimal(String.valueOf(number)));
                 number = new StringBuilder();
                 Operator operator = Operator.of(token);
                 if (Operator.isNotPriority(operator)) {
@@ -49,7 +48,7 @@ public class InfixParser implements ParserExpression {
         }
         pushBracket();
         cleanParser();
-        return validTypeResult(operands.pollLast());
+        return Operator.typeDigit(operands.pollLast());
     }
 
     private static char[] safeExpression(String expression) {
@@ -71,7 +70,7 @@ public class InfixParser implements ParserExpression {
     }
 
     private static void pushBracket() {
-        if (number.length() > 0) operands.add(Double.valueOf(String.valueOf(number)));
+        if (number.length() > 0) operands.add(new BigDecimal(String.valueOf(number)));
         while (!operators.isEmpty()) {
             if (Operator.OPENBRACKET.equals(operators.peekLast())) {
                 operators.removeLast();
@@ -88,7 +87,7 @@ public class InfixParser implements ParserExpression {
         }
     }
 
-    private static void calculation()  {
+    private static void calculation() {
         try {
             Operator operator = (operators.pollLast());
             if (Operator.isBinary(operator)) {
@@ -106,5 +105,4 @@ public class InfixParser implements ParserExpression {
         number = new StringBuilder();
         expression.clear();
     }
-
 }

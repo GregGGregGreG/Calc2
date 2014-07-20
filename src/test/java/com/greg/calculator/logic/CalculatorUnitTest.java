@@ -4,7 +4,6 @@ import com.greg.calculator.config.BaseTest;
 import com.greg.calculator.logic.parser.ParserExpression;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -70,7 +69,7 @@ public class CalculatorUnitTest extends BaseTest {
 
     @Test
     public void exponentiation() throws Exception {
-        Assert.assertTrue(infixParser.parser("2^65").equals("3.6893488147419103E19"));
+        Assert.assertTrue(infixParser.parser("2^65").equals("3.6893488147E+19"));
     }
 
     @Test
@@ -84,8 +83,8 @@ public class CalculatorUnitTest extends BaseTest {
     @Test
     public void cos() throws Exception {
         Assert.assertTrue(infixParser.parser("cos(5)").equals("0.28366218546322625"));
-        Assert.assertTrue(infixParser.parser("cos(5)+1").equals("1.2836621854632262"));
-        Assert.assertTrue(infixParser.parser("1+cos(5)").equals("1.2836621854632262"));
+        Assert.assertTrue(infixParser.parser("cos(5)+1").equals("1.28366218546322625"));
+        Assert.assertTrue(infixParser.parser("1+cos(5)").equals("1.28366218546322625"));
         Assert.assertTrue(infixParser.parser("√cos(1+cos(5))").equals("0.532169956934904"));
     }
 
@@ -106,13 +105,14 @@ public class CalculatorUnitTest extends BaseTest {
                 infixParser.parser("55+(((2+(2*10)-(-5))/(-10))+(88*-22)))-3").equals("-1886.7"));
     }
 
-    @Ignore
+
     @Test
-    public void test() throws Exception {
+    public void testBigDecimal() throws Exception {
         Assert.assertTrue(infixParser.parser("10.3-10").equals("0.3"));
+
     }
 
-    @Ignore
+
     @Test(expected = Exception.class)
     public void divZero() throws Exception {
         infixParser.parser("5/0");
