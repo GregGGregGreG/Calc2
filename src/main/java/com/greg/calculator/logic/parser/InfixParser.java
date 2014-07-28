@@ -2,6 +2,9 @@ package com.greg.calculator.logic.parser;
 
 import com.greg.calculator.logic.ExceptionParserPolishNotation;
 import com.greg.calculator.logic.Operator;
+import com.greg.calculator.logic.calculation.Calculations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -12,11 +15,21 @@ import java.util.LinkedList;
 @Component
 public class InfixParser implements ParserExpression {
 
+    public static final Character FLOATING_POINT = 'E';
+    public static final Character POINT = '.';
+
+    public static final int MIN_SIZE_NUMBER = 0;
+    public static final int MIN_QUANTITY_OPERANDS = 2;
+
     private static StringBuilder number = new StringBuilder();
     private static Deque<BigDecimal> operands = new LinkedList<>();
     private static Deque<Operator> operators = new LinkedList<>();
     private static Deque<Character> expression = new ArrayDeque<>();
 
+
+    @Qualifier(value = "calculations")
+    @Autowired
+    private Calculations calculation;
 
     public String parser(String str) throws ExceptionParserPolishNotation {
         for (char token : safeExpression(str)) {
@@ -25,10 +38,10 @@ public class InfixParser implements ParserExpression {
 
         while (expression.iterator().hasNext()) {
             char token = expression.pollFirst();
-            if (Character.isDigit(token) || token == '.' || token == 'E') {
+            if (Character.isDigit(token) || token == POINT || token == FLOATING_POINT) {
                 number.append(token);
             } else if (Operator.is(token)) {
-                if (number.length() > 0) operands.add(new BigDecimal(String.valueOf(number)));
+                if (number.length() > MIN_SIZE_NUMBER) operands.add(new BigDecimal(String.valueOf(number)));
                 number = new StringBuilder();
                 Operator operator = Operator.of(token);
                 if (Operator.isNotPriority(operator)) {
@@ -70,8 +83,8 @@ public class InfixParser implements ParserExpression {
                 .toCharArray();
     }
 
-    private static void pushBracket() {
-        if (number.length() > 0) operands.add(new BigDecimal(String.valueOf(number)));
+    private void pushBracket() {
+        if (number.length() > MIN_SIZE_NUMBER) operands.add(new BigDecimal(String.valueOf(number)));
         while (!operators.isEmpty()) {
             if (Operator.OPENBRACKET.equals(operators.peekLast())) {
                 operators.removeLast();
@@ -81,20 +94,20 @@ public class InfixParser implements ParserExpression {
         }
     }
 
-    private static void pushOperators() {
-        while ((operands.size() >= 2 && !Operator.OPENBRACKET.equals(operators.peekLast()))
+    private void pushOperators() {
+        while ((operands.size() >= MIN_QUANTITY_OPERANDS && !Operator.OPENBRACKET.equals(operators.peekLast()))
                 || Operator.isBinary(operators.peekLast())) {
             calculation();
         }
     }
 
-    private static void calculation() {
+    private void calculation() {
         try {
             Operator operator = (operators.pollLast());
             if (Operator.isBinary(operator)) {
-                operands.addLast(Operator.calculation(operator, operands.pollLast()));
+                operands.addLast(calculation.calculation(operator, operands.pollLast()));
             } else {
-                operands.addLast(Operator.calculation(operator, operands.pollLast(), operands.pollLast()));
+                operands.addLast(calculation.calculation(operator, operands.pollLast(), operands.pollLast()));
             }
         } catch (NullPointerException e) {
             System.out.println("Invalid expression");

@@ -97,7 +97,7 @@ public class CalculatorViewForm extends JFrame implements CalculatorView, Serial
     @Autowired
     private MyModelTable model;
     @Autowired
-    public ICalculatorEditView calcEditView;
+    private ICalculatorEditView calcEditView;
 
     @PostConstruct
     public void init() {
