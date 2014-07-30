@@ -62,7 +62,5 @@ public enum Operator {
         return operator == SQRT || operator == COS;
     }
 
-    public static String typeDigit(BigDecimal bdNumber) {
-        return bdNumber.toString().replaceAll("\\.0$", "");
-    }
+
 }

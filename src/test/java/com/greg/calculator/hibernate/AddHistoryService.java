@@ -12,12 +12,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.IOException;
 import java.util.Date;
 
-/**
- * Created by GREG on 13.07.2014.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 
-public class AddHistoryService extends BaseTest{
+public class AddHistoryService extends BaseTest {
 
     @Qualifier("historyStorage")
     @Autowired
@@ -26,6 +23,5 @@ public class AddHistoryService extends BaseTest{
     @Test
     public final void AddHistory() throws IOException {
         addHistoryService.addHistory(new History(new Date(), "2+2", "22"));
-        System.out.println(toString());
     }
 }

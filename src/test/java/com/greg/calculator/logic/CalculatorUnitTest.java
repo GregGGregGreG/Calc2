@@ -73,7 +73,7 @@ public class CalculatorUnitTest extends BaseTest {
 
     @Test
     public void sqrt() throws Exception {
-//        Assert.assertTrue(infixParser.parser("√3").equals("1.7320508075688772"));
+        Assert.assertTrue(infixParser.parser("√3").equals("1.73205080757"));
         Assert.assertTrue(infixParser.parser("√9+1").equals("4"));
         Assert.assertTrue(infixParser.parser("1+√9").equals("4"));
         Assert.assertTrue(infixParser.parser("√(1+√9)+1").equals("3"));
@@ -81,16 +81,15 @@ public class CalculatorUnitTest extends BaseTest {
 
     @Test
     public void cos() throws Exception {
-        Assert.assertTrue(infixParser.parser("cos(5)").equals("0.28366218546322625"));
-        Assert.assertTrue(infixParser.parser("cos(5)+1").equals("1.28366218546322625"));
-        Assert.assertTrue(infixParser.parser("1+cos(5)").equals("1.28366218546322625"));
-        Assert.assertTrue(infixParser.parser("√cos(1+cos(5))").equals("0.532169956934904"));
+        Assert.assertTrue(infixParser.parser("cos(5)").equals("0.28366218546"));
+        Assert.assertTrue(infixParser.parser("cos(5)+1").equals("1.28366218546"));
+        Assert.assertTrue(infixParser.parser("1+cos(5)").equals("1.28366218546"));
+        Assert.assertTrue(infixParser.parser("√cos(1+cos(5))").equals("0.53216995693"));
     }
 
     @Test
     public void AdditionOfFloatingPointNumbers() throws Exception {
         Assert.assertTrue(infixParser.parser("23.66+3.454").equals("27.114"));
-//        Assert.assertTrue(infixParser.parser("23.66+3.454").equals("27.114"));
     }
 
     @Test

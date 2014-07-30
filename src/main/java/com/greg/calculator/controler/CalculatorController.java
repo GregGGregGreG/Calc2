@@ -55,13 +55,13 @@ public class CalculatorController {
 
     private void point(Character symbol, String inputText) {
         if (addPoint) {
-            view.setInputText(inputText + symbol);
+            view.setInputText(view.getInputText() + symbol);
             addPoint = false;
         }
     }
 
     private void openBracket(Character symbol, String inputText) {
-        if (inputText.equals("0")) {
+        if (inputText.equals("0") || inputText.equals("")) {
             view.setInputText(String.valueOf(symbol));
             openBracket++;
         } else if (addOperator == false) {

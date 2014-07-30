@@ -2,7 +2,7 @@ package com.greg.calculator.logic.parser;
 
 import com.greg.calculator.logic.ExceptionParserPolishNotation;
 import com.greg.calculator.logic.Operator;
-import com.greg.calculator.logic.calculation.Calculations;
+import com.greg.calculator.logic.calculation.ICalculations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -29,7 +29,7 @@ public class InfixParser implements ParserExpression {
 
     @Qualifier(value = "calculations")
     @Autowired
-    private Calculations calculation;
+    private ICalculations calculation;
 
     public String parser(String str) throws ExceptionParserPolishNotation {
         for (char token : safeExpression(str)) {
@@ -61,7 +61,8 @@ public class InfixParser implements ParserExpression {
         }
         pushBracket();
         cleanParser();
-        return Operator.typeDigit(operands.pollLast());
+        System.out.println(calculation.typeDigit(operands.peekLast()));
+        return calculation.typeDigit(operands.pollLast());
     }
 
     private static char[] safeExpression(String expression) {
@@ -78,6 +79,7 @@ public class InfixParser implements ParserExpression {
                 .replaceAll("/-", "/(0-")               // Division by a negative number
                 .replaceAll("\\*\\-", "\\*(\\0-")       // Multiplication by a negative number
                 .replaceAll("√", "p")                   // Valid sqrt sign
+                .replaceAll("sqrt", "p")                   // Valid sqrt sign
                 .replaceAll("cos", "c")                  //Valid cos
                 .replaceAll("E\\+", "E")                   //Valid point floating
                 .toCharArray();
