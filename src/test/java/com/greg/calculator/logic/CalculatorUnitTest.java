@@ -68,7 +68,7 @@ public class CalculatorUnitTest extends BaseTest {
 
     @Test
     public void exponentiation() throws Exception {
-        Assert.assertTrue(infixParser.parser("2^65").equals("3.6893488147E+19"));
+        Assert.assertTrue(infixParser.parser("2^65").equals("3.68934881474E+19"));
     }
 
     @Test

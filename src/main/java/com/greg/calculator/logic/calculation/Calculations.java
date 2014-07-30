@@ -5,18 +5,17 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.text.DecimalFormat;
 
 @Component(value = "calculations")
 public class Calculations implements ICalculations {
 
-    private static final MathContext mc = new MathContext(12);
-    private static final DecimalFormat format = new DecimalFormat("#0.##########");
+    private static final MathContext mc = new MathContext(40);
 
     @Override
     public String typeDigit(BigDecimal bdNumber) {
-        if (bdNumber.toString().length() == 13) return format.format(bdNumber).replaceAll(",", ".");
-        return bdNumber.toString().replaceAll("\\.0$", "");
+        if (bdNumber.toString().length() > 13 && bdNumber.doubleValue() < 1) {
+            return String.valueOf(new BigDecimal(bdNumber.toString(), new MathContext(11)));
+        } else return String.valueOf(new BigDecimal(bdNumber.toString(), new MathContext(12))).replaceAll("\\.0$", "");
     }
 
     @Override
